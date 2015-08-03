@@ -5,7 +5,7 @@
   <subtitle><![CDATA[随笔]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com//"/>
-  <updated>2015-08-03T17:53:42.000Z</updated>
+  <updated>2015-08-03T17:57:26.000Z</updated>
   <id>http://yoursite.com//</id>
   
   <author>
@@ -17,10 +17,10 @@
   
   <entry>
     <title><![CDATA[sqlchemy如何分表]]></title>
-    <link href="http://yoursite.com/2015/08/03/sqlchemy%E5%A6%82%E4%BD%95%E5%88%86%E8%A1%A8/"/>
-    <id>http://yoursite.com/2015/08/03/sqlchemy如何分表/</id>
-    <published>2015-08-03T13:45:39.000Z</published>
-    <updated>2015-08-03T17:53:42.000Z</updated>
+    <link href="http://yoursite.com/2015/06/29/sqlchemy%E5%A6%82%E4%BD%95%E5%88%86%E8%A1%A8/"/>
+    <id>http://yoursite.com/2015/06/29/sqlchemy如何分表/</id>
+    <published>2015-06-29T13:45:39.000Z</published>
+    <updated>2015-08-03T17:57:26.000Z</updated>
     <content type="html"><![CDATA[<h2 id="背景">背景</h2><p>话说sqlalchemy真是一个非常好用的库，python orm基本上是舍我其谁了，文档还非常全面，基本上没有什么硬伤，现在也冲出了1.0版本，未来更加值得期待。<br>我最早用django orm，不过很快就觉得很多功能不够用，我当时用的版本是1.3.1，没有<em>bulk insert</em>也没有<em>锁</em>，没有这两个功能，好多应用就没法用django开发了。之后开始接触sqlalchemy，一直用到现在，总的体会是只有你想不到没有它做不到。</p>
 <p>我们项目里有一个需求，就是数据按月分表，比如:2014年6月数据就存在<em>record_201406</em>表中, 其他月数据按此方法类推。这个需求如果是用sqlalchemy来获取数据，我们怎么做呢？</p>
 <h2 id="一般方法有什么问题？">一般方法有什么问题？</h2><p>一般情况下，我们很自然想到使用如下方法：</p>
