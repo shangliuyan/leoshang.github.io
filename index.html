@@ -185,6 +185,13 @@
 
         
           
+            <span class="post-comments-count">
+            &nbsp; | &nbsp;
+            <a href="/2015/08/03/sqlchemy如何分表/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/08/03/sqlchemy如何分表/" itemprop="commentsCount"></span>
+            </a>
+          </span>
+          
         
       </div>
     </header>
@@ -196,23 +203,26 @@
 
       
         
-          <span itemprop="articleBody"><h2 id="背景">背景</h2><p>话说sqlalchemy真是一个非常好用的库，python orm基本上是舍我其谁了，文档还非常全面，基本上没有什么硬伤，现在也冲出了1.0版本，未来更加值得期待。<br>我最早用django orm，不过很快就觉得很多功能不够用，我当时用得是1.3.1，没有<em>bulk insert</em>也没有<em>锁</em>，缺这两样好多应用就没法用django开发了。之后开始接触sqlalchemy，一直用到现在，总的体会是只有你想不到没有它做不到。</p>
+          <span itemprop="articleBody"><h2 id="背景">背景</h2><p>话说sqlalchemy真是一个非常好用的库，python orm基本上是舍我其谁了，文档还非常全面，基本上没有什么硬伤，现在也冲出了1.0版本，未来更加值得期待。<br>我最早用django orm，不过很快就觉得很多功能不够用，我当时用的版本是1.3.1，没有<em>bulk insert</em>也没有<em>锁</em>，没有这两个功能，好多应用就没法用django开发了。之后开始接触sqlalchemy，一直用到现在，总的体会是只有你想不到没有它做不到。</p>
 <p>我们项目里有一个需求，就是数据按月分表，比如:2014年6月数据就存在<em>record_201406</em>表中, 其他月数据按此方法类推。这个需求如果是用sqlalchemy来获取数据，我们怎么做呢？</p>
 <h2 id="一般方法有什么问题？">一般方法有什么问题？</h2><p>一般情况下，我们很自然想到使用如下方法：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RecodeDao_201406</span><span class="params">(Base)</span>:</span></span><br><span class="line">   	__tablename__ = <span class="string">'record_201406'</span></span><br><span class="line">   	id = Column(INT(<span class="number">11</span>), primary_key=<span class="keyword">True</span>)</span><br><span class="line">   ...</span><br></pre></td></tr></table></figure>
 <p>或者简化点：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RecodeDao_201406</span><span class="params">(Base)</span>:</span></span><br><span class="line">   	__table__ = Table(<span class="string">'record_201406'</span>,</span><br><span class="line">       Base.metadata, autoload=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
-<p>实现上这样确实没问题，但回到需求上，既然是按月分表，难不成我要每个月写一个这样的model？每月上次线？既然不行，那我们怎么解决呢？</p>
-<h2 id="官网解决办法，有什么问题？">官网解决办法，有什么问题？</h2><p>有经验的同学可能发现，这个不就是水平<em>sharding</em>么？这么说不完全对，看一下sharding的<em>wiki</em>定义：</p>
+<p>这样实现确实没问题，但回到需求上，既然是按月分表，难不成我要每个月写一个这样的model？每月上次线？当然不行，那我们怎么解决呢？</p>
+<h2 id="官网解决方法，有什么问题？">官网解决方法，有什么问题？</h2><p>有经验的同学可能发现，这个不就是水平<em>sharding</em>么？这么说不完全对，看一下sharding的<em>wiki</em>定义：</p>
 <blockquote>
 <p>A database shard is a horizontal partition of data in a database or search engine. Each individual partition is referred to as a shard or database shard. Each shard is held on a separate database server instance, to spread load.</p>
 </blockquote>
-<p>我们这个需求只涉及单数据库，就不算<em>sharing</em>了，可以称为<em>partitioning</em>（分区），然而强大的sqlalchemy这两个情况都考虑到了，并且官网都提供了<a href="http://docs.sqlalchemy.org/en/rel_1_0/orm/examples.html#examples-sharding" target="_blank" rel="external">example</a>，我们单挑partitioning出来看看:</p>
+<p>我们这个需求只涉及单数据库，就不算<em>sharding</em>了，可以称为<em>partitioning</em>（分区），然而强大的sqlalchemy这两个情况都考虑到了，并且官网都提供了<a href="http://docs.sqlalchemy.org/en/rel_1_0/orm/examples.html#examples-sharding" target="_blank" rel="external">example</a>，我们挑对应场景的partitioning出来看看:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> sqlalchemy.orm <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> sqlalchemy.ext.declarative <span class="keyword">import</span> declarative_base</span><br><span class="line"></span><br><span class="line">Base = declarative_base()</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TBase</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""Base class is a 'mixin'.</span><br><span class="line"></span><br><span class="line">    Guidelines for declarative mixins is at:</span><br><span class="line"></span><br><span class="line">    http://www.sqlalchemy.org/docs/orm/extensions/declarative.html#mixin-classes</span><br><span class="line"></span><br><span class="line">    """</span></span><br><span class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>)</span><br><span class="line">    data = Column(String(<span class="number">50</span>))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"%s(data=%r)"</span> % (</span><br><span class="line">            self.__class__.__name__, self.data</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">T1Foo</span><span class="params">(TBase, Base)</span>:</span></span><br><span class="line">    __tablename__ = <span class="string">'t1'</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">T2Foo</span><span class="params">(TBase, Base)</span>:</span></span><br><span class="line">    __tablename__ = <span class="string">'t2'</span></span><br><span class="line"></span><br><span class="line">    timestamp = Column(DateTime, default=func.now())</span><br><span class="line"></span><br><span class="line">engine = create_engine(<span class="string">'sqlite://'</span>, echo=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">Base.metadata.create_all(engine)</span><br><span class="line"></span><br><span class="line">sess = sessionmaker(engine)()</span><br><span class="line"></span><br><span class="line">sess.add_all([T1Foo(data=<span class="string">'t1'</span>), T1Foo(data=<span class="string">'t2'</span>), T2Foo(data=<span class="string">'t3'</span>),</span><br><span class="line">             T1Foo(data=<span class="string">'t4'</span>)])</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> sess.query(T1Foo).all()</span><br><span class="line"><span class="keyword">print</span> sess.query(T2Foo).all()</span><br></pre></td></tr></table></figure>
-<p>使用了继承的方法，抽象的好，但我们之前的问题解决了吗？没有。还是需要预定义好所有表的model类，才能正确使用，逼不得已，我们只能另辟蹊径了。</p>
-<h2 id="方法一">方法一</h2><p>经过一番探索，我得出了如下方法:</p>
+<p>使用了继承的方法，抽象的好，但我们之前的问题解决了吗？没有。还是需要预定义好所有表的model类，才能正确使用，迫不得已，我们只能自己想办法了。</p>
+<h2 id="函数方法解决">函数方法解决</h2><p>经过一番探索，我得出了如下方法:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">class_registry = &#123;&#125;                                                                                                                                                                    </span><br><span class="line">DbBase = declarative_base(bind=engine, class_registry=class_registry)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_model</span><span class="params">(modelname, tablename, metadata=DbBase.metadata)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">        args:</span><br><span class="line">            modelname:新model名，string类型</span><br><span class="line">            tablename:数据库中表名</span><br><span class="line">        usage:</span><br><span class="line">          RecordDao = get_model("RecordDao_201406", "record_201406")</span><br><span class="line">    """</span></span><br><span class="line">    <span class="keyword">if</span> modelname <span class="keyword">not</span> <span class="keyword">in</span> class_registry: </span><br><span class="line">        model = type(modelname, (DbBase,), dict(</span><br><span class="line">            __table__ = Table(tablename, metadata, autoload=<span class="keyword">True</span>)</span><br><span class="line">        ))  </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        model = class_registry[modelname]</span><br><span class="line"><span class="keyword">return</span> model</span><br></pre></td></tr></table></figure>
-<p>每次想获取对应月表数据的<em>model</em>，调用<em>get_model</em>方法即可。这个方法我一直沿用，直到</p>
+<p>每次想获取对应月表数据的<em>model</em>，调用<em>get_model</em>方法即可。这个方法一直沿用到现在，虽然有点丑陋，但却是解决了以上问题。直到sqlalchemy 0.9.1版本推出<em>Automap</em></p>
+<h2 id="Automap方法">Automap方法</h2><p>sqlalchemy文档完备，具体可点击<a href="http://docs.sqlalchemy.org/en/rel_1_0/orm/extensions/automap.html" target="_blank" rel="external">Automap</a>，它可以自动映射数据库的表，通过数据表名映射model，简单直接，实现起来如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> sqlalchemy.ext.automap <span class="keyword">import</span> automap_base</span><br><span class="line"></span><br><span class="line">AutoBase = automap_base()</span><br><span class="line"><span class="comment"># reflect the tables</span></span><br><span class="line">AutoBase.prepare(engine, reflect=<span class="keyword">True</span>)</span><br><span class="line">tablename = <span class="string">"record_201406"</span></span><br><span class="line">RecordDao = getattr(AutoBase.classes, tablename)</span><br></pre></td></tr></table></figure>
+<p>这样就可以了，很清晰。但是这个方法有一个缺点，<em>Automap</em>的映射虽然是自动的，但是只有在启动的时候生效，也就是说如果新建一个数据表，而没有告诉<em>Automap</em>，那这个表是找不到的。在实际使用中，可以捕获AttributeError异常，并再次调用<code>AutoBase.prepare(engine, reflect=True)</code> 刷新映射关系。</p>
 </span>
         
       
@@ -262,6 +272,13 @@
         
 
         
+          
+            <span class="post-comments-count">
+            &nbsp; | &nbsp;
+            <a href="/2015/06/17/我为什么写博客/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/17/我为什么写博客/" itemprop="commentsCount"></span>
+            </a>
+          </span>
           
         
       </div>
@@ -421,6 +438,25 @@
 
   
 
+    <script type="text/javascript">
+      var disqus_shortname = 'leoshang';
+      var disqus_identifier = 'index.html';
+      var disqus_title = '';
+      var disqus_url = '';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+    </script>
+  
+
 
 
   
@@ -456,6 +492,25 @@
   
   
 
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'leoshang';
+      var disqus_identifier = 'index.html';
+      var disqus_title = '';
+      var disqus_url = '';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+    </script>
   
 
 
