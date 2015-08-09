@@ -28,7 +28,7 @@
 
 
 
-  <meta name="keywords" content="Hexo,next" />
+  <meta name="keywords" content="celery,python," />
 
 
 
@@ -39,22 +39,19 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="我以前也有写技术博客的习惯，在csdn上，解决一个问题写一篇，有些工具的使用方式也放上边，比较有规律。
-后来换了工作，开始比较忙，就扔下了，等闲下来想写，又觉得不好意思了。那时候眼界宽了，看过很多大牛写的文章，觉得自己写的这么浅显，有点拿不出手，想厚积薄发再写。然后就到了现在，对于写博客来说又有了新认识，所以又准备重新捡起这个习惯。
-首先，自己确实有刚需。有的技术问题虽然解决了，但是下次遇到了，细">
+<meta name="description" content="两年前，公司所有的管理后台用的都是django admin，我们遇到一个复杂的需求，需要从django admin调用执行一个大批量处理脚本，并且可以查看执行状态。当时不太了解celery，加上时间紧迫，就没敢冒险。简单说说我们当时是怎么做的，我们把这个脚本做成了command line的形式，django使用python的subprocess调用这个命令，为了满足可以查看状态这个需求，我们单独创">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我为什么写博客?">
-<meta property="og:url" content="http://yoursite.com/2015/06/17/我为什么写博客/index.html">
+<meta property="og:title" content="celery有什么难理解的?">
+<meta property="og:url" content="http://yoursite.com/2015/07/04/celery有什么难理解的/index.html">
 <meta property="og:site_name" content="Leo Shang 的 BLOG">
-<meta property="og:description" content="我以前也有写技术博客的习惯，在csdn上，解决一个问题写一篇，有些工具的使用方式也放上边，比较有规律。
-后来换了工作，开始比较忙，就扔下了，等闲下来想写，又觉得不好意思了。那时候眼界宽了，看过很多大牛写的文章，觉得自己写的这么浅显，有点拿不出手，想厚积薄发再写。然后就到了现在，对于写博客来说又有了新认识，所以又准备重新捡起这个习惯。
-首先，自己确实有刚需。有的技术问题虽然解决了，但是下次遇到了，细">
-<meta property="og:updated_time" content="2015-08-03T13:36:06.000Z">
+<meta property="og:description" content="两年前，公司所有的管理后台用的都是django admin，我们遇到一个复杂的需求，需要从django admin调用执行一个大批量处理脚本，并且可以查看执行状态。当时不太了解celery，加上时间紧迫，就没敢冒险。简单说说我们当时是怎么做的，我们把这个脚本做成了command line的形式，django使用python的subprocess调用这个命令，为了满足可以查看状态这个需求，我们单独创">
+<meta property="og:image" content="http://yoursite.com/img/RabbitMQRouting.png">
+<meta property="og:image" content="http://yoursite.com/img/Producer-Broker-Consumer-Arrangement.png">
+<meta property="og:image" content="http://yoursite.com/img/Celery_RabitMQ_Diagram.png">
+<meta property="og:updated_time" content="2015-08-09T12:53:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我为什么写博客?">
-<meta name="twitter:description" content="我以前也有写技术博客的习惯，在csdn上，解决一个问题写一篇，有些工具的使用方式也放上边，比较有规律。
-后来换了工作，开始比较忙，就扔下了，等闲下来想写，又觉得不好意思了。那时候眼界宽了，看过很多大牛写的文章，觉得自己写的这么浅显，有点拿不出手，想厚积薄发再写。然后就到了现在，对于写博客来说又有了新认识，所以又准备重新捡起这个习惯。
-首先，自己确实有刚需。有的技术问题虽然解决了，但是下次遇到了，细">
+<meta name="twitter:title" content="celery有什么难理解的?">
+<meta name="twitter:description" content="两年前，公司所有的管理后台用的都是django admin，我们遇到一个复杂的需求，需要从django admin调用执行一个大批量处理脚本，并且可以查看执行状态。当时不太了解celery，加上时间紧迫，就没敢冒险。简单说说我们当时是怎么做的，我们把这个脚本做成了command line的形式，django使用python的subprocess调用这个命令，为了满足可以查看状态这个需求，我们单独创">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -64,7 +61,7 @@
   };
 </script>
 
-  <title> 我为什么写博客? | Leo Shang 的 BLOG </title>
+  <title> celery有什么难理解的? | Leo Shang 的 BLOG </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -163,7 +160,7 @@
           
           
             
-              我为什么写博客?
+              celery有什么难理解的?
             
           
         </h1>
@@ -172,8 +169,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-06-17T19:05:26+08:00" content="2015-06-17">
-            2015-06-17
+          <time itemprop="dateCreated" datetime="2015-07-04T14:09:06+08:00" content="2015-07-04">
+            2015-07-04
           </time>
         </span>
 
@@ -183,8 +180,8 @@
           
             <span class="post-comments-count">
             &nbsp; | &nbsp;
-            <a href="/2015/06/17/我为什么写博客/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/17/我为什么写博客/" itemprop="commentsCount"></span>
+            <a href="/2015/07/04/celery有什么难理解的/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/04/celery有什么难理解的/" itemprop="commentsCount"></span>
             </a>
           </span>
           
@@ -198,26 +195,71 @@
       
 
       
-        <span itemprop="articleBody"><p>我以前也有写技术博客的习惯，在csdn上，解决一个问题写一篇，有些工具的使用方式也放上边，比较有规律。</p>
-<p>后来换了工作，开始比较忙，就扔下了，等闲下来想写，又觉得不好意思了。那时候眼界宽了，看过很多大牛写的文章，觉得自己写的这么浅显，有点拿不出手，想厚积薄发再写。然后就到了现在，对于写博客来说又有了新认识，所以又准备重新捡起这个习惯。</p>
-<p>首先，自己确实有刚需。有的技术问题虽然解决了，但是下次遇到了，细节问题又要重新检索，时间成本高，最好还是找个地方记录。另外，在检索信息的过程中，正是很多博客的内容给了我很多指引，解决了问题，写了博客也可以帮助他人，也算是回馈技术圈的一种方式。写博客还有一种好处就是加深认识，提高表述能力。平时对很多问题确实是有了新的理解，但让我写出来，讲给他人，那还得再深思熟虑一番，这个过程对博主是很有帮助的。这段时间深有体会，才想起来还是要再写博客，至于写得是不是有独到见解，是不是拿得出手，其实也没那么重要，都是自己成长的过程。</p>
-<p>本篇作为新博客第一篇，既为了开篇，也为了纪念。至于为什么用了<strong><em>githup page + hexo</em></strong>，确实是为了可定制、免费、省心。另外<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">NexT</a>的主题满足了我的所有需求，如果你喜欢我的博客样式，可以尝试一下。</p>
+        <span itemprop="articleBody"><p>两年前，公司所有的管理后台用的都是django admin，我们遇到一个复杂的需求，需要从django admin调用执行一个大批量处理脚本，并且可以查看执行状态。<br>当时不太了解celery，加上时间紧迫，就没敢冒险。简单说说我们当时是怎么做的，我们把这个脚本做成了command line的形式，django使用python的subprocess调用这个命令，为了满足可以查看状态这个需求，我们单独创建了一个任务表，在启动脚本时先插入数据，完成或者异常都更新这条数据状态，这样在django admin里就能看到执行状态了。<br>这个方法满足了需求，并沿用到现在，但是这里有一个显而易见的硬伤：django必须和这个脚本在同一个服务器上。好吧，毫无可拓展性。<br>其实这个就是一个天然celery使用场景，如果使用celery就可以轻松解决分布拓展问题。</p>
+<h2 id="什么是celery？">什么是celery？</h2><p>说了这么多，什么是celery呢？<a href="http://www.celeryproject.org/" target="_blank" rel="external">官网</a>定义：</p>
+<blockquote>
+<p>Celery is an asynchronous task queue/job queue based on distributed message passing.</p>
+</blockquote>
+<p>celery是一个基于分布消息传递的异步任务队列。定义很简单，但是这里隐含了一个条件就是celery不是单独存在的，它一定需要建立在一个分布的消息传递机制上，这个消息传递机制就是celery文档里常说的<em>broker</em>。我认为这是第一个难以理解的点。<br>一般情况下，一个工具库或者一个框架都是独立的，有自己的feature或者功能点，可能依赖其他的库，但绝不依赖于其他服务。但是celery是一个特例，如果celery没有broker这个服务，那就完全不能用了。这就是为什么现在网络上大多数celery文章都是和rabbitmq或者redis一起讲的。<br>清楚这点，知道了broker和celery的关系，就不会有rabbitmq不就可以做任务队列吗？为什么和celery结合？这样的疑问。事实上，在<a href="https://www.rabbitmq.com/tutorials/tutorial-two-python.html" target="_blank" rel="external">官网</a>上就有使用rabbit作为任务队列的实现，多种语言都有。rabbitmq是消息代理中间件，具体应用到什么场景，怎么用，用什么语言，都可以自己定义，celery也实现了这个接口而已。</p>
+<h2 id="celery结构框架">celery结构框架</h2><p>下面贴一个celery+rabbitmq的结构图，个人认为挺能说明问题：<br><img src="/img/RabbitMQRouting.png" alt="celery rabbitmq结构图"><br>celery隐藏了rabbitmq接口的实现细节，既充当了publisher（client）又充当了consumer (worker)的角色。<br>这是第二个难理解的点，这个困扰可能来源于celery提供的get start文档，如果按照这个文档一步步走，确实能走通流程。但是这个通俗的demo有一个问题，就是他的publisher和consumer都在一台server上，并且client调用具体任务的方式是通过import。这让人很难理解，为什么说celery是分布的呢？但是奇怪的是，官方demo就没有publisher和consumer分布在两台server的例子。</p>
+<p><img src="/img/Producer-Broker-Consumer-Arrangement.png" alt="client broker worker关系图"><br>如上图所示，producer、broker、consumer之间的网络拓扑关系可以有这5种情形。</p>
+<h2 id="celery到底做了什么？">celery到底做了什么？</h2><p>上文说了，rabbitmq官网就有demo做任务队列的，那要celery有何用呢？还有上边，我提到的那个需求，没用celery，虽然拓展性不好，但是改一下用一个web服务代替不就行了么？这么说没错，但都是重复造轮子。<br>思考一下，如果我们用rabbitmq自己实现任务队列，有一天我们不想用rabbit了怎么办？我们换个思维，如果没有celery，让你自己设计一个异步任务队列你怎么做。首先，要有一个发起任务的client，选定一定保存任务信息的媒介，由一个worker去一直监听这个信息媒介，这个worker最好是多进程的，另外可以兼容尽可能多得信息媒介。好吧，这个不就是celery所做的事儿么，celery兼容多个broker，既是任务发起者又是执行者，另外支持多进程…还有好多通用功能考虑。<br>看一下这个图体会一下celery+rabbitmq的整个工作流程：</p>
+<p><img src="/img/Celery_RabitMQ_Diagram.png" alt="Celery_RabitMQ_Diagram"></p>
+<h2 id="我是怎么用的?">我是怎么用的?</h2><p>说了这么多，来看看我是怎么用的。</p>
+<ol>
+<li><p>选择broker和result backend<br>  知道了原理，这个选择要容易些，对于消息中转，没有比rabbitmq更灵活健壮的了，至于对result backend的存储，仁者见仁。rabbitmq安装配置<a href="http://celery.readthedocs.org/en/latest/getting-started/brokers/rabbitmq.html" target="_blank" rel="external">参考</a></p>
+</li>
+<li><p>提取celery配置文件<br> 把共有配置文件提出来，进行维护，比分别维护producer和consumer的配置统一容易的多。<br> celeryconfig.py</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">BROKER_URL = <span class="string">'amqp://test01:password@192.10.2.156//'</span></span><br><span class="line">CELERY_RESULT_BACKEND = <span class="string">'amqp://test01:password@192.10.2.156//'</span></span><br><span class="line">CELERY_ACCEPT_CONTENT = [<span class="string">'json'</span>]</span><br><span class="line">CELERY_TASK_SERIALIZER = <span class="string">'json'</span></span><br><span class="line">CELERY_RESULT_SERIALIZER = <span class="string">'json'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>consumer（server）端开发</p>
+<ul>
+<li><p>在项目目录下创建app.py文件</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> celery <span class="keyword">import</span> Celery</span><br><span class="line">app = Celery(<span class="string">'tqlib'</span>, include=[<span class="string">'tq.tasks'</span>])</span><br><span class="line">app.config_from_object(<span class="string">'celeryconfig'</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.start()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建tasks.py</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tq.app <span class="keyword">import</span> app</span><br><span class="line"><span class="decorator">@app.task</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(no)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> no</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动多进程服务<br>  项目目录结构为</p>
+<pre><code>tq<span class="comment">----app.py</span>
+  |<span class="comment">---tasks.py</span>
+  |<span class="comment">---celeryconfig.py</span>
+</code></pre><p>  启动指令为：</p>
+  <figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">celery multi restart ccworker --<span class="keyword">app</span>=tq.<span class="keyword">app</span>  -<span class="keyword">l</span> info</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>producer(client)端开发</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> celery <span class="keyword">import</span> Celery</span><br><span class="line">celery = Celery()</span><br><span class="line">celery.config_from_object(<span class="string">'celeryconfig'</span>)</span><br><span class="line">celery.send_task(<span class="string">'tq.tasks.test'</span>, (<span class="string">"hello world"</span>,))</span><br></pre></td></tr></table></figure>
+<p>注意，就是celery.send_task()这个方法解决了producer和consumer的网路拓扑传递数据问题。 </p>
+</li>
+</ol>
 </span>
       
     </div>
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/celery/" rel="tag">#celery</a>
+          
+            <a href="/tags/python/" rel="tag">#python</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/06/29/sqlchemy如何分表/" rel="prev">sqlalchemy如何分表</a>
+              <a href="/2015/07/06/python的协程/" rel="prev">python的协程</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/06/29/sqlchemy如何分表/" rel="next">sqlalchemy如何分表</a>
             
           </div>
         </div>
@@ -332,7 +374,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是celery？"><span class="nav-number">1.</span> <span class="nav-text">什么是celery？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#celery结构框架"><span class="nav-number">2.</span> <span class="nav-text">celery结构框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#celery到底做了什么？"><span class="nav-number">3.</span> <span class="nav-text">celery到底做了什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我是怎么用的?"><span class="nav-number">4.</span> <span class="nav-text">我是怎么用的?</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
@@ -386,9 +428,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'leoshang';
-      var disqus_identifier = '2015/06/17/我为什么写博客/';
-      var disqus_title = '我为什么写博客?';
-      var disqus_url = 'http://yoursite.com/2015/06/17/我为什么写博客/';
+      var disqus_identifier = '2015/07/04/celery有什么难理解的/';
+      var disqus_title = 'celery有什么难理解的?';
+      var disqus_url = 'http://yoursite.com/2015/07/04/celery有什么难理解的/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');

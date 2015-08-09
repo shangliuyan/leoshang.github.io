@@ -1,0 +1,652 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="永远年轻, 永远热泪盈眶" />
+
+
+
+  <meta name="keywords" content="python,tornado," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Leo Shang 的 BLOG" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="在网站逐步发展的过程中，很可能就会遇到C10K问题，python中一个比较流行的解决方式是通过tornado这个web server解决。tornado是一个非阻塞的Web服务器，下面我会结合源码，对tornado进行一下结构来说明。
+基础理论在这之前，我们需要先弄清楚几个概念，便于我们理解tornado。
+
+同步、异步、阻塞和非阻塞这几个概念的区别和联系。这个问题网上内容很多，可以看下知乎这个问">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tornado的网络模型">
+<meta property="og:url" content="http://yoursite.com/2015/07/19/tornado的网络模型/index.html">
+<meta property="og:site_name" content="Leo Shang 的 BLOG">
+<meta property="og:description" content="在网站逐步发展的过程中，很可能就会遇到C10K问题，python中一个比较流行的解决方式是通过tornado这个web server解决。tornado是一个非阻塞的Web服务器，下面我会结合源码，对tornado进行一下结构来说明。
+基础理论在这之前，我们需要先弄清楚几个概念，便于我们理解tornado。
+
+同步、异步、阻塞和非阻塞这几个概念的区别和联系。这个问题网上内容很多，可以看下知乎这个问">
+<meta property="og:image" content="http://yoursite.com/img/tornado-httpserver.png">
+<meta property="og:updated_time" content="2015-08-09T12:52:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tornado的网络模型">
+<meta name="twitter:description" content="在网站逐步发展的过程中，很可能就会遇到C10K问题，python中一个比较流行的解决方式是通过tornado这个web server解决。tornado是一个非阻塞的Web服务器，下面我会结合源码，对tornado进行一下结构来说明。
+基础理论在这之前，我们需要先弄清楚几个概念，便于我们理解tornado。
+
+同步、异步、阻塞和非阻塞这几个概念的区别和联系。这个问题网上内容很多，可以看下知乎这个问">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> tornado的网络模型 | Leo Shang 的 BLOG </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Leo Shang 的 BLOG</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              tornado的网络模型
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-07-19T18:36:45+08:00" content="2015-07-19">
+            2015-07-19
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+            &nbsp; | &nbsp;
+            <a href="/2015/07/19/tornado的网络模型/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/19/tornado的网络模型/" itemprop="commentsCount"></span>
+            </a>
+          </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>在网站逐步发展的过程中，很可能就会遇到<a href="http://www.kegel.com/c10k.html" target="_blank" rel="external">C10K</a>问题，python中一个比较流行的解决方式是通过tornado这个web server解决。<br>tornado是一个非阻塞的Web服务器，下面我会结合源码，对tornado进行一下结构来说明。</p>
+<h2 id="基础理论">基础理论</h2><p>在这之前，我们需要先弄清楚几个概念，便于我们理解tornado。</p>
+<ul>
+<li>同步、异步、阻塞和非阻塞这几个概念的区别和联系。这个问题网上内容很多，可以看下<a href="http://www.zhihu.com/question/19732473" target="_blank" rel="external">知乎这个问题的讨论</a>，个人认为还是不错的，几个高票的回答从不同角度说明了问题，看过后应该会有比较清晰的认识。</li>
+<li>epoll的原理。这个是tornado的核心，在网上前人说了很多。我推荐这个[知乎讨论]（<a href="http://www.zhihu.com/question/20122137）,@蓝形参和@张亚伟的回答结合看，应该就能理解大概的原理" target="_blank" rel="external">http://www.zhihu.com/question/20122137）,@蓝形参和@张亚伟的回答结合看，应该就能理解大概的原理</a></li>
+</ul>
+<h2 id="核心模块">核心模块</h2><p>tornado的核心模块分为三部分：</p>
+<ul>
+<li>httpserver - 服务于 web 模块的一个非常简单的 HTTP 服务器的实现</li>
+<li>iostream - 对非阻塞式的 socket 的简单封装，以方便常用读写操作</li>
+<li>ioloop - 核心的 I/O 循环</li>
+</ul>
+<p>我们结合tornado官网的<em>hello world</em>，看看整个过程到底是怎么进行的。<br>hello_world.py:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> tornado.httpserver</span><br><span class="line"><span class="keyword">import</span> tornado.ioloop</span><br><span class="line"><span class="keyword">import</span> tornado.web</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.write(<span class="string">"Hello, world"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    application = tornado.web.Application([</span><br><span class="line">        (<span class="string">r"/"</span>, MainHandler),</span><br><span class="line">    ])</span><br><span class="line">    http_server = tornado.httpserver.HTTPServer(application)</span><br><span class="line">    http_server.listen(<span class="number">8888</span>)                                                                                                                              </span><br><span class="line">    tornado.ioloop.IOLoop.instance().start()</span><br></pre></td></tr></table></figure>
+<p>当我们运行python hello_world.py，先实例化一个tornado.web.Application实例<em>application</em>(这个类并不是核心范畴，所以在这里暂且不做说明，可以简单理解为对数据请求进行url路由，并且生成返回数据的一个handler。在hello_world.py中，我们对根目录url的请求，返回“hello world”内容的数据)。</p>
+<p>然后将<em>application</em>作为参数，实例化tornado.httpserver.HTTPServer，赋值给http_server，http_server再调用listen方法。<br>这个过程发生了什么，我们来看看httpserver.py。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, request_callback, no_keep_alive=False, io_loop=None,</span><br><span class="line">             xheaders=False, ssl_options=None)</span>:</span></span><br><span class="line">    <span class="string">"""Initializes the server with the given request callback.</span><br><span class="line"></span><br><span class="line">    If you use pre-forking/start() instead of the listen() method to</span><br><span class="line">    start your server, you should not pass an IOLoop instance to this</span><br><span class="line">    constructor. Each pre-forked child process will create its own</span><br><span class="line">    IOLoop instance after the forking process.</span><br><span class="line">    """</span></span><br><span class="line">    self.request_callback = request_callback</span><br><span class="line">    self.no_keep_alive = no_keep_alive</span><br><span class="line">    self.io_loop = io_loop</span><br><span class="line">    self.xheaders = xheaders</span><br><span class="line">    self.ssl_options = ssl_options</span><br><span class="line">    self._socket = <span class="keyword">None</span></span><br><span class="line">    self._started = <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">listen</span><span class="params">(self, port, address=<span class="string">""</span>)</span>:</span></span><br><span class="line">    <span class="string">"""Binds to the given port and starts the server in a single process.</span><br><span class="line"></span><br><span class="line">    This method is a shortcut for:</span><br><span class="line"></span><br><span class="line">        server.bind(port, address)</span><br><span class="line">        server.start(1)</span><br><span class="line"></span><br><span class="line">    """</span></span><br><span class="line">    self.bind(port, address)</span><br><span class="line">    self.start(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>实例化方法除了将<em>application</em>赋值为request_callback外，都是使用的默认值，注意这里<em>io_loop=None</em>。listen方法比较简单，绑定socket然后调用start方法。start方法代码比较多，只看主要逻辑。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> self.io_loop:</span><br><span class="line">    self.io_loop = ioloop.IOLoop.instance()</span><br><span class="line">self.io_loop.add_handler(self._socket.fileno(),</span><br><span class="line">                         self._handle_events,</span><br><span class="line">                         ioloop.IOLoop.READ)</span><br></pre></td></tr></table></figure>
+<p>终于出现io_loop，在实例化httpserver的时候io_loop=None，这里将ioloop.IOLoop.instance()赋值给ioloop。值得一提的是ioloop采用单实例模式，所以ioloop.IOLoop.instance()就是返回ioloop的实例。现在跳转到ioloop.py。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_handler</span><span class="params">(self, fd, handler, events)</span>:</span></span><br><span class="line">    <span class="string">"""Registers the given handler to receive the given events for fd."""</span></span><br><span class="line">    self._handlers[fd] = handler</span><br><span class="line">    self._impl.register(fd, events | self.ERROR)</span><br></pre></td></tr></table></figure>
+<p>可以看到add_handler方法将fd文件描述符和events事件注册到_impl上，这个_impl可以认为是epoll类（根据操作系统不同可能为kqueue），另外将handler赋值给self._handlers[fd]，_handlers[fd]相当于文件描述符和回调函数对应的字典，当事件触发的时候会调用。回到httpserver.py，我们调用的是</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">self.io_loop.add_handler(self._socket.fileno(),</span><br><span class="line">                         self._handle_events,</span><br><span class="line">                         ioloop.IOLoop.READ)</span><br></pre></td></tr></table></figure>
+<p>文件描述符是监听端口的socket，事件READ可以认为I/O是数据读取就绪，回调函数为self._handle_events:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_handle_events</span><span class="params">(self, fd, events)</span>:</span>                                                                                                                     </span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            connection, address = self._socket.accept()</span><br><span class="line">        <span class="keyword">except</span> socket.error, e:</span><br><span class="line">            <span class="keyword">if</span> e[<span class="number">0</span>] <span class="keyword">in</span> (errno.EWOULDBLOCK, errno.EAGAIN):</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">raise</span></span><br><span class="line">        <span class="keyword">if</span> self.ssl_options <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">assert</span> ssl, <span class="string">"Python 2.6+ and OpenSSL required for SSL"</span></span><br><span class="line">            connection = ssl.wrap_socket(</span><br><span class="line">                connection, server_side=<span class="keyword">True</span>, **self.ssl_options)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            stream = iostream.IOStream(connection, io_loop=self.io_loop)</span><br><span class="line">            HTTPConnection(stream, address, self.request_callback,</span><br><span class="line">                           self.no_keep_alive, self.xheaders)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            logging.error(<span class="string">"Error in connection callback"</span>, exc_info=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<p>现在我们可以梳理一下整个过程，httpserver监听一个端口，并把这个文件描述符通过ioloop注册到epoll，只要收到请求，epoll回调_handle_events方法。这个方法做了什么呢？<br>根据请求数据，创建了一个socket连接<em>connection</em>，然后将这个connection作为文件描述符实例化另一个核心模块<em>iostream</em>，赋值为steam，然后使用steam和self.request_callback(tornado.web.Application实例的<em>application</em>)作为主要参数，实例HTTPConnection。<br>HTTPConnection负责HTTP协议部分，它的I/O使用iostream，通过iostream read方法读取数据解析数据包，然后调用application生成返回数据，在调用iostream write方法将数据返回。这个过程的I/O事件注册就靠iostream.<br>我们看下实例iostream的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, socket, io_loop=None, max_buffer_size=<span class="number">104857600</span>,</span><br><span class="line">             read_chunk_size=<span class="number">4096</span>)</span>:</span></span><br><span class="line">    self.socket = socket</span><br><span class="line">    self.socket.setblocking(<span class="keyword">False</span>)</span><br><span class="line">    self.io_loop = io_loop <span class="keyword">or</span> ioloop.IOLoop.instance()</span><br><span class="line">    self.max_buffer_size = max_buffer_size</span><br><span class="line">    self.read_chunk_size = read_chunk_size</span><br><span class="line">    self._read_buffer = <span class="string">""</span></span><br><span class="line">    self._write_buffer = <span class="string">""</span></span><br><span class="line">    self._read_delimiter = <span class="keyword">None</span></span><br><span class="line">    self._read_bytes = <span class="keyword">None</span></span><br><span class="line">    self._read_callback = <span class="keyword">None</span></span><br><span class="line">    self._write_callback = <span class="keyword">None</span></span><br><span class="line">    self._close_callback = <span class="keyword">None</span></span><br><span class="line">    self._state = self.io_loop.ERROR                                                                                                                      </span><br><span class="line">    self.io_loop.add_handler(</span><br><span class="line">        self.socket.fileno(), self._handle_events, self._state)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_until</span><span class="params">(self, delimiter, callback)</span>:</span></span><br><span class="line">    <span class="string">"""Call callback when we read the given delimiter."""</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="keyword">not</span> self._read_callback, <span class="string">"Already reading"</span></span><br><span class="line">    loc = self._read_buffer.find(delimiter)</span><br><span class="line">    <span class="keyword">if</span> loc != -<span class="number">1</span>:</span><br><span class="line">        self._run_callback(callback, self._consume(loc + len(delimiter)))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    self._check_closed()</span><br><span class="line">    self._read_delimiter = delimiter</span><br><span class="line">    self._read_callback = callback</span><br><span class="line">    self._add_io_state(self.io_loop.READ)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write</span><span class="params">(self, data, callback=None)</span>:</span></span><br><span class="line">    <span class="string">"""Write the given data to this stream.</span><br><span class="line">    """</span></span><br><span class="line">    self._check_closed()</span><br><span class="line">    self._write_buffer += data</span><br><span class="line">    self._add_io_state(self.io_loop.WRITE)</span><br><span class="line">    self._write_callback = callback</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_add_io_state</span><span class="params">(self, state)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self._state &amp; state:</span><br><span class="line">        self._state = self._state | state</span><br><span class="line">        self.io_loop.update_handler(self.socket.fileno(), self._state)</span><br></pre></td></tr></table></figure>
+<p>可以看到在实例iostream的时候，我们就将返回给客户端的文件描述符注册到ioloop上，但是事件是ERROR。在write和read_until方法中，都调用了_add_io_state方法，这个方法负责更新对应文件描述符的注册事件。</p>
+<p>现在我们来看看tornado所谓的单线程主要的任务调度逻辑，ioloop中start方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">start</span><span class="params">(self)</span>:</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    ...</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            event_pairs = self._impl.poll(poll_timeout)</span><br><span class="line">        <span class="keyword">except</span> Exception, e:</span><br><span class="line">            <span class="comment"># Depending on python version and IOLoop implementation,</span></span><br><span class="line">            <span class="comment"># different exception types may be thrown and there are</span></span><br><span class="line">            <span class="comment"># two ways EINTR might be signaled:</span></span><br><span class="line">            <span class="comment"># * e.errno == errno.EINTR</span></span><br><span class="line">            <span class="comment"># * e.args is like (errno.EINTR, 'Interrupted system call')</span></span><br><span class="line">            <span class="keyword">if</span> (getattr(e, <span class="string">'errno'</span>) == errno.EINTR <span class="keyword">or</span></span><br><span class="line">                (isinstance(getattr(e, <span class="string">'args'</span>), tuple) <span class="keyword">and</span></span><br><span class="line">                 len(e.args) == <span class="number">2</span> <span class="keyword">and</span> e.args[<span class="number">0</span>] == errno.EINTR)):</span><br><span class="line">                logging.warning(<span class="string">"Interrupted system call"</span>, exc_info=<span class="number">1</span>)</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">raise</span></span><br><span class="line">    ...</span><br><span class="line">        self._events.update(event_pairs)</span><br><span class="line">        <span class="keyword">while</span> self._events:</span><br><span class="line">            fd, events = self._events.popitem()</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                self._handlers[fd](fd, events)</span><br><span class="line">            <span class="keyword">except</span> (KeyboardInterrupt, SystemExit):</span><br><span class="line">                <span class="keyword">raise</span></span><br><span class="line">            <span class="keyword">except</span> (OSError, IOError), e:</span><br><span class="line">                <span class="keyword">if</span> e[<span class="number">0</span>] == errno.EPIPE:</span><br><span class="line">                    <span class="comment"># Happens when the client closes the connection</span></span><br><span class="line">                    <span class="keyword">pass</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    logging.error(<span class="string">"Exception in I/O handler for fd %d"</span>,</span><br><span class="line">                                  fd, exc_info=<span class="keyword">True</span>)</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                logging.error(<span class="string">"Exception in I/O handler for fd %d"</span>,</span><br><span class="line">                              fd, exc_info=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<p>在这里 <code>event_pairs = self._impl.poll(poll_timeout)</code>，陷入epoll，然后<code>while self._events</code>之后的代码，运行触发事件后回调函数。<br>现在我们通过一张图看看整个流程：<br><img src="/img/tornado-httpserver.png" alt="tornado-httpserver图"></p>
+<h2 id="还有什么">还有什么</h2><p>我们看到在tornado中，无论运行什么库，只要涉及I/O，都要注册到ioloop上，这样才能发挥异步I/O的作用，否则tornado也回阻塞。所以tornado会有很多第三方库，所以在实际使用中，我们有必要学习一下第三方库的使用。个人以为如果用了celery，这些都库都可以不用了，通过tornado把任务抛到celery，可以省去学习第三方库的成本。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag">#python</a>
+          
+            <a href="/tags/tornado/" rel="tag">#tornado</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/06/python的协程/" rel="next">python的协程</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/uploads/avatar.png" alt="Leo Shang" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Leo Shang</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">永远年轻, 永远热泪盈眶</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础理论"><span class="nav-number">1.</span> <span class="nav-text">基础理论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#核心模块"><span class="nav-number">2.</span> <span class="nav-text">核心模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#还有什么"><span class="nav-number">3.</span> <span class="nav-text">还有什么</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo Shang</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'leoshang';
+      var disqus_identifier = '2015/07/19/tornado的网络模型/';
+      var disqus_title = 'tornado的网络模型';
+      var disqus_url = 'http://yoursite.com/2015/07/19/tornado的网络模型/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

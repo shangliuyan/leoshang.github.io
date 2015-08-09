@@ -1,0 +1,666 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="永远年轻, 永远热泪盈眶" />
+
+
+
+  <meta name="keywords" content="python," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Leo Shang 的 BLOG" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="关于python的协程，网上资料还是挺多的，这里说一下我的理解吧。
+什么是协程？先看一下wiki的定义吧
+
+Coroutines are computer program components that generalize subroutines for nonpreemptive multitasking, by allowing multiple entry points for suspe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python的协程">
+<meta property="og:url" content="http://yoursite.com/2015/07/06/python的协程/index.html">
+<meta property="og:site_name" content="Leo Shang 的 BLOG">
+<meta property="og:description" content="关于python的协程，网上资料还是挺多的，这里说一下我的理解吧。
+什么是协程？先看一下wiki的定义吧
+
+Coroutines are computer program components that generalize subroutines for nonpreemptive multitasking, by allowing multiple entry points for suspe">
+<meta property="og:updated_time" content="2015-08-09T12:49:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python的协程">
+<meta name="twitter:description" content="关于python的协程，网上资料还是挺多的，这里说一下我的理解吧。
+什么是协程？先看一下wiki的定义吧
+
+Coroutines are computer program components that generalize subroutines for nonpreemptive multitasking, by allowing multiple entry points for suspe">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> python的协程 | Leo Shang 的 BLOG </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Leo Shang 的 BLOG</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              python的协程
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-07-06T15:18:35+08:00" content="2015-07-06">
+            2015-07-06
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+            &nbsp; | &nbsp;
+            <a href="/2015/07/06/python的协程/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/06/python的协程/" itemprop="commentsCount"></span>
+            </a>
+          </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>关于python的协程，网上资料还是挺多的，这里说一下我的理解吧。</p>
+<h2 id="什么是协程？">什么是协程？</h2><p>先看一下wiki的定义吧</p>
+<blockquote>
+<p>Coroutines are computer program components that generalize subroutines for nonpreemptive multitasking, by allowing multiple entry points for suspending and resuming execution at certain locations.</p>
+</blockquote>
+<p>这个定义不太容易理解。一句话可能很难直观的说明协程这个概念，通俗讲，协程是由一系列的子程序协同完成一个任务，这些子程序可以主动挂起交出控制权，当恢复执行的时候，可以从挂起的位置继续执行，而这一切的调度由用户操作，而不是操作系统。所以有人称，<em>协程是用户态线程</em>。<br>协程的实现并不与操作系统相关，是语言相关的，所以可以看到主流的一些语言都有协程的实现，包括java，go等。在python中，协程是通过生成器实现的，<em>yeild</em>就可以保存当前子程序上下文，并交出控制权，使用send就可以传递数据并恢复相应子程序。这样多个生成器子程序，就可以通过yield和send相互协作完成任务。</p>
+<h2 id="python的协程和生成器的关系">python的协程和生成器的关系</h2><p>说到这里，可能会产生疑问，使用<em>yield</em>的函数不是生成器么？生成器就是协程么？确实如此，参见<a href="https://www.python.org/dev/peps/pep-0342/" target="_blank" rel="external">PEP 342</a>，在python 2.5以前生成器就是仅仅是迭代器函数，可以生成无限列表。但是yield保存上下文，主动交出控制权的特性已经很接近协程了，所以在python 2.5对生成器进行了几个改进：</p>
+<ul>
+<li>yield从语句变为表达式, 这个是为了传值方便</li>
+<li>加入send()方法用于在恢复生成器的时候，传入值</li>
+<li>加入close()方法用于结束协程</li>
+<li>加入throw()方法用于传入异常<br>加入了send()和throw()方法，我们就可以在协程恢复的时候，传入值或者异常。有了这些特性，python从语言上就支持基本的协程功能了，当然对不同协程的控制，还要用户自己来编写。所以我们可以说，从python 2.5以后的生成器才可以用于作为协程。</li>
+</ul>
+<h2 id="与greenlet，gevent的关系">与greenlet，gevent的关系</h2><p>介绍完python在语义上对协程的支持，但实际使用中会发现，很少有用生成器方式的协程，一般用greenlets，gevent这样的package代替。为什么会这样呢？主要还是因为python2.x对协程的支持有限，要支持复杂的应用比较困难，但是在python3以后，协程会更加好用，我们看看python对协程的支持历程：</p>
+<blockquote>
+<p>Implementations for Python</p>
+<ul>
+<li>Python 2.5 implements better support for coroutine-like functionality, based on extended generators (PEP 342)</li>
+<li>Python 3.3 improves this ability, by supporting delegating to a subgenerator (PEP 380)</li>
+<li>Python 3.4 introduces a comprehensive asynchronous I/O framework as standardized in PEP 3156, which includes coroutines that leverage subgenerator delegation</li>
+<li>Python 3.5 introduces explicit support for coroutines with async/await syntax (PEP 0492).</li>
+</ul>
+</blockquote>
+<p>到Python 3.5都已经有明确的异步操作方法了，但是这些都是2.x所不具备的。所以在python2.x时代，就需要其他实现方式作为补充。<br>greenlet就是这样一个库，它是从stackless python中剥离，支持CPython的版本的一个协程模块, 相当于python协程的增强版。在github上有使用greenlet重新实现生成器的<a href="https://github.com/python-greenlet/greenlet/blob/master/tests/test_generator.py" target="_blank" rel="external">demo</a>，大家可以体会一下greenlet的特性。但是和python 生成器协程一样，greenlet也没有控制调度的功能，如果要实现一个非阻塞的操作，还要自己实现控制调度逻辑，这就催生了gevent的产生。</p>
+<blockquote>
+<p>gevent is a coroutine-based Python networking library that uses greenlet to provide a high-level synchronous API on top of the libev event loop.<br>Features include:</p>
+<ul>
+<li>Fast event loop based on libev (epoll on Linux, kqueue on FreeBSD).</li>
+<li>Lightweight execution units based on greenlet.</li>
+<li>API that re-uses concepts from the Python standard library (for example there are Events and Queues).</li>
+<li>Cooperative sockets with SSL support »</li>
+<li>DNS queries performed through threadpool or c-ares.</li>
+<li>Monkey patching utility to get 3rd party modules to become cooperative »</li>
+</ul>
+</blockquote>
+<p>gevent在greenlet基础上结合libev作为事件循环，补充了协程要自己写异步调度的空缺，最大化了协程的性能。在此基础上，还提供了多种API，方便开发，甚至直接提供了一个支持协程WSGI server，bottle就支持了这个特性。另外值得一提的是它的<em>Monkey patch</em>，可以无缝将python标准库中阻塞的API包装成非阻塞的，这一特性大大提高了gevent的应用率。</p>
+<h2 id="协程带来的改变">协程带来的改变</h2><p>面向对象是和现实世界构成的形式一致的，但是不同对象之间的交互，还是采用调用的关系。调用关系隐含的的是主从关系，但现实世界，很多关系的协作是对等的，比如生产者和消费者。协程就是在计算机程序设计中对这种现实反映的实现。<br>下面我们结合程序简要说明协程的几种应用：</p>
+<ul>
+<li><p>无限列表<br>  假设一种情形，我们需要所有的斐波那契数列，如果不用协程基本上实现不了吧。协程实现就很方便：</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">()</span>:</span></span><br><span class="line">     first, second = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">     <span class="keyword">yield</span> first</span><br><span class="line">     <span class="keyword">yield</span> second</span><br><span class="line">     <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">         third = first + second</span><br><span class="line">         <span class="keyword">yield</span> third</span><br><span class="line">         first = second</span><br><span class="line">         second = third</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>管道<br>  如果我们想用python实现管道怎么做呢，答案也是协程。下面这个例子来自于<a href="https://books.google.co.jp/books?id=Chr1NDlUcI8C&amp;pg=PA108&amp;lpg=PA108&amp;dq=coroutine+find_files+cat+grep&amp;source=bl&amp;ots=OCDDzmgZCq&amp;sig=6ldU6qqPblKMl0Qv9li3fBmBsyQ&amp;hl=zh-CN&amp;sa=X&amp;ved=0CCIQ6AEwAGoVChMIxL-D1ciWxwIVzQiOCh26tgyg#v=onepage&amp;q=coroutine%20find_files%20cat%20grep&amp;f=false" target="_blank" rel="external">python参考手册</a>，打印指定目录下，满足格式文件中，有“python”关键字的行</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line">    <span class="keyword">import</span> fnmatch</span><br><span class="line">    <span class="keyword">import</span> gzip, bz2</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">coroutine</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="string">"""自动调用协程的next()函数"""</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">start</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">            g = func(*args, **kwargs)</span><br><span class="line">            g.next()</span><br><span class="line">            <span class="keyword">return</span> g</span><br><span class="line">        <span class="keyword">return</span> start</span><br><span class="line">    </span><br><span class="line"><span class="decorator">    @coroutine</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">find_files</span><span class="params">(target)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">            topdir, pattern = (<span class="keyword">yield</span>)</span><br><span class="line">            <span class="keyword">for</span> path, dirname, filelist <span class="keyword">in</span> os.walk(topdir):</span><br><span class="line">                <span class="keyword">for</span> name <span class="keyword">in</span> filelist:</span><br><span class="line">                    <span class="keyword">if</span> fnmatch.fnmatch(name, pattern):</span><br><span class="line">                        target.send(os.path.join(path, name))</span><br><span class="line">    </span><br><span class="line"><span class="decorator">    @coroutine</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">opener</span><span class="params">(target)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">            name = (<span class="keyword">yield</span>)</span><br><span class="line">            <span class="keyword">if</span> name.endswith(<span class="string">'.gz'</span>): f = gzip.open(name)</span><br><span class="line">            <span class="keyword">elif</span> name.endswith(<span class="string">'.bz2'</span>): f = bz2.BZ2File(name)</span><br><span class="line">            <span class="keyword">else</span>: f = open(name)</span><br><span class="line">            target.send(f)</span><br><span class="line">    </span><br><span class="line"><span class="decorator">    @coroutine</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cat</span><span class="params">(target)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">            f = (<span class="keyword">yield</span>)</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">                target.send(line)</span><br><span class="line">    </span><br><span class="line"><span class="decorator">    @coroutine</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">grep</span><span class="params">(pattern, target)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">            line = (<span class="keyword">yield</span>)</span><br><span class="line">            <span class="keyword">if</span> pattern <span class="keyword">in</span> line:</span><br><span class="line">                target.send(line)</span><br><span class="line"><span class="decorator">    @coroutine</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">printer</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">            line = (<span class="keyword">yield</span>)</span><br><span class="line">            sys.stdout.write(line)</span><br><span class="line">    </span><br><span class="line">    finder = find_files(opener(cat(grep(<span class="string">'python'</span>, printer))))</span><br><span class="line"></span><br><span class="line">finder.send(<span class="string">'www'</span>, <span class="string">'access-log*'</span>)</span><br><span class="line">finder.send(<span class="string">'otherwww'</span>, <span class="string">'access-log*'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>并发<br>  关于并发，最好的例子应该是gevent吧，大家有兴趣可以看下源码。基本的原理是，将函数变为协程，每触发I/O阻塞就yield交出控制权，并将事件注册到epoll，当I/O就绪就是用send方法，传入I/O数据，并恢复逻辑。这么描述其实和tornado、nodejs的网络模型很像，但是协程对于程序员更加友好。tornado和nodejs默认还是通过回调函数完成这个事件循环的，这样代码并不直观，但使用协程可以用同步的方式完成回调函数的工作。</p>
+</li>
+</ul>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag">#python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/07/19/tornado的网络模型/" rel="prev">tornado的网络模型</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/04/celery有什么难理解的/" rel="next">celery有什么难理解的?</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/uploads/avatar.png" alt="Leo Shang" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Leo Shang</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">永远年轻, 永远热泪盈眶</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是协程？"><span class="nav-number">1.</span> <span class="nav-text">什么是协程？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python的协程和生成器的关系"><span class="nav-number">2.</span> <span class="nav-text">python的协程和生成器的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与greenlet，gevent的关系"><span class="nav-number">3.</span> <span class="nav-text">与greenlet，gevent的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协程带来的改变"><span class="nav-number">4.</span> <span class="nav-text">协程带来的改变</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo Shang</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'leoshang';
+      var disqus_identifier = '2015/07/06/python的协程/';
+      var disqus_title = 'python的协程';
+      var disqus_url = 'http://yoursite.com/2015/07/06/python的协程/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
