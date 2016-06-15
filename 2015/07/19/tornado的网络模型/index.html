@@ -52,7 +52,7 @@
 
 同步、异步、阻塞和非阻塞这几个概念的区别和联系。这个问题网上内容很多，可以看下知乎这个问">
 <meta property="og:image" content="http://yoursite.com/img/tornado-httpserver.png">
-<meta property="og:updated_time" content="2015-08-09T12:52:13.000Z">
+<meta property="og:updated_time" content="2015-08-09T14:06:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tornado的网络模型">
 <meta name="twitter:description" content="在网站逐步发展的过程中，很可能就会遇到C10K问题，python中一个比较流行的解决方式是通过tornado这个web server解决。tornado是一个非阻塞的Web服务器，下面我会结合源码，对tornado进行一下结构来说明。
@@ -233,7 +233,7 @@
 <p>现在我们来看看tornado所谓的单线程主要的任务调度逻辑，ioloop中start方法。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">start</span><span class="params">(self)</span>:</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    ...</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            event_pairs = self._impl.poll(poll_timeout)</span><br><span class="line">        <span class="keyword">except</span> Exception, e:</span><br><span class="line">            <span class="comment"># Depending on python version and IOLoop implementation,</span></span><br><span class="line">            <span class="comment"># different exception types may be thrown and there are</span></span><br><span class="line">            <span class="comment"># two ways EINTR might be signaled:</span></span><br><span class="line">            <span class="comment"># * e.errno == errno.EINTR</span></span><br><span class="line">            <span class="comment"># * e.args is like (errno.EINTR, 'Interrupted system call')</span></span><br><span class="line">            <span class="keyword">if</span> (getattr(e, <span class="string">'errno'</span>) == errno.EINTR <span class="keyword">or</span></span><br><span class="line">                (isinstance(getattr(e, <span class="string">'args'</span>), tuple) <span class="keyword">and</span></span><br><span class="line">                 len(e.args) == <span class="number">2</span> <span class="keyword">and</span> e.args[<span class="number">0</span>] == errno.EINTR)):</span><br><span class="line">                logging.warning(<span class="string">"Interrupted system call"</span>, exc_info=<span class="number">1</span>)</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">raise</span></span><br><span class="line">    ...</span><br><span class="line">        self._events.update(event_pairs)</span><br><span class="line">        <span class="keyword">while</span> self._events:</span><br><span class="line">            fd, events = self._events.popitem()</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                self._handlers[fd](fd, events)</span><br><span class="line">            <span class="keyword">except</span> (KeyboardInterrupt, SystemExit):</span><br><span class="line">                <span class="keyword">raise</span></span><br><span class="line">            <span class="keyword">except</span> (OSError, IOError), e:</span><br><span class="line">                <span class="keyword">if</span> e[<span class="number">0</span>] == errno.EPIPE:</span><br><span class="line">                    <span class="comment"># Happens when the client closes the connection</span></span><br><span class="line">                    <span class="keyword">pass</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    logging.error(<span class="string">"Exception in I/O handler for fd %d"</span>,</span><br><span class="line">                                  fd, exc_info=<span class="keyword">True</span>)</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                logging.error(<span class="string">"Exception in I/O handler for fd %d"</span>,</span><br><span class="line">                              fd, exc_info=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
 <p>在这里 <code>event_pairs = self._impl.poll(poll_timeout)</code>，陷入epoll，然后<code>while self._events</code>之后的代码，运行触发事件后回调函数。<br>现在我们通过一张图看看整个流程：<br><img src="/img/tornado-httpserver.png" alt="tornado-httpserver图"></p>
-<h2 id="还有什么">还有什么</h2><p>我们看到在tornado中，无论运行什么库，只要涉及I/O，都要注册到ioloop上，这样才能发挥异步I/O的作用，否则tornado也回阻塞。所以tornado会有很多第三方库，所以在实际使用中，我们有必要学习一下第三方库的使用。个人以为如果用了celery，这些都库都可以不用了，通过tornado把任务抛到celery，可以省去学习第三方库的成本。</p>
+<h2 id="还有什么">还有什么</h2><p>我们看到在tornado中，无论运行什么库，只要涉及I/O，都要注册到ioloop上，这样才能发挥异步I/O的作用，否则tornado也会阻塞。所以tornado会有很多第三方库，所以在实际使用中，我们有必要学习一下第三方库的使用。</p>
 </span>
       
     </div>
@@ -252,6 +252,8 @@
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/15/python2-json的大坑/" rel="prev">python2 json的大坑</a>
             
           </div>
 
@@ -323,7 +325,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -337,7 +339,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -389,7 +391,7 @@
       <div class="footer-inner"> <div class="copyright" >
   
   &copy; &nbsp; 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart"></i>
   </span>
