@@ -5,7 +5,7 @@
   <subtitle><![CDATA[随笔]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com//"/>
-  <updated>2016-06-15T16:03:13.000Z</updated>
+  <updated>2016-10-19T18:10:21.000Z</updated>
   <id>http://yoursite.com//</id>
   
   <author>
@@ -14,6 +14,165 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[当我们在谈论配置终端，我们在谈些什么]]></title>
+    <link href="http://yoursite.com/2016/10/20/%E5%BD%93%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E8%AE%BA%E9%85%8D%E7%BD%AE%E7%BB%88%E7%AB%AF%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/"/>
+    <id>http://yoursite.com/2016/10/20/当我们在谈论配置终端，我们在谈些什么/</id>
+    <published>2016-10-19T17:53:45.000Z</published>
+    <updated>2016-10-19T18:10:21.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="当我们在谈论终端时，我们在谈些什么">当我们在谈论终端时，我们在谈些什么</h2><p>程序员经常使用终端，甚至只在终端下工作，那么终端的顺手程度就很重要了。不可避免的，大多数程序员都掌握了配置终端的技巧，但从目前我看到的文章来看，没有比较系统的总结。本文试图通过梳理终端相关的背景知识，整理一个清晰的配置脉络。</p>
+<h4 id="我们配置的是终端，还是shell？">我们配置的是终端，还是shell？</h4><p>通常我们说配置终端的时候，其实隐含的意思是配置shell解释器和终端（terminal），以及常用软件（ls，grep）。为什么这三者都要配置呢？什么配置是属于shell解释器的，什么是由终端软件管理的，什么是软件的配置呢？</p>
+<p>想要弄明白这些问题，就需要我们知道他们之间的关系。</p>
+<p> <img src="/img/Stdstreams-notitle.svg" alt="Stdstreams-notitle"></p>
+<p>shell解释器是terminal进程的一个子进程，shell解释器通过标准输入和标准输出与terminal设备文件交互的，在shell下运行的软件，是shell的子进程，也是通过标准输入输出和terminal设备文件进行交互。值得一提，在类UNIX下，虚拟终端也是一个设备，设备文件形如<em>/dev/ttys</em>。</p>
+<p>明白这个关系，我们就知道配置的边界了。比如我想修改一下显示的字体，很显然，shell的标准输出不可能输出字体格式的，我们需要在terminal的配置里找到字体配置需要的字体。</p>
+<blockquote>
+<p>需要注意的是，shell解释器并不特指bash，一台类UNIX操作系统，往往可以支持多种shell解释器。通过<code>cat /etc/shells</code> 可以查看本机支持的shell解释器。另外，不同shell解释器的配置文件也不一样，以bash为例，<em>~/.bash_profile ~/.bashrc</em>是它的配置文件，而zsh则是<em>~/.zsh_profile ~/.zshrc</em></p>
+</blockquote>
+<h4 id="颜色是怎么显示出来的？">颜色是怎么显示出来的？</h4><p>毫无疑问，配置终端的重点在于颜色搭配和语法高亮。既然终端和进程交互是标准输入输出，那标准输出可不可以输出颜色属性呢？</p>
+<p>答案是:<a href="https://en.wikipedia.org/wiki/ANSI_escape_code" target="_blank" rel="external">ANSI转义序列(escape code)</a> 。形如:ESC+[（一般显示为 ^[[）的字符序列可实现在屏幕上定位光标、改变输出字符颜色等功能。例如在bash中， <code>ESC</code> 字符可以用一下三种转义形式输出:</p>
+<ul>
+<li><code>\e</code></li>
+<li><code>\033</code></li>
+<li><code>\x1B</code></li>
+</ul>
+<p>我们可以用”<esc>[<em>Color Code</em>m”    的形式输出颜色，例如：</esc></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printf &#34;Default \e[91mLight red&#34;</span><br></pre></td></tr></table></figure>
+<p>终端的显示为：</p>
+<p> <img src="/img/term_color.png" alt="terminal color"></p>
+<p>同理，所谓的终端提示符颜色，以及各种软件结果的输出，只要加上颜色转义，就会被终端显示为对应的颜色。理论上，我们任何的输出都可以自定义颜色，例如下面的方法，将make日志的不同级别分颜色打印出来。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make 2&#62;&#38;1 | sed -e &#39;s/.*\bWARN.*/\x1b[7m&#38;\x1b[0m/i&#39; -e &#39;s/.*\bERR.*/\x1b[93;41m&#38;\x1b[0m/i&#39;</span><br></pre></td></tr></table></figure>
+<p>了解到这些，就明白为什么 <em>ls</em> 指令为什么默认没有颜色，但 <em>ls -G</em> 就有颜色了，输出加入颜色转义了嘛。</p>
+<h4 id="我们需要配置终端的什么？">我们需要配置终端的什么？</h4><p>下面我列了下，一般我们需要做的配置清单</p>
+<ul>
+<li><p>字体字号</p>
+<ul>
+<li>字体：推荐苹果的两代字体 Monaco和Menlo，Monaco第一眼看起来真是惊艳，但普遍反映Menlo更加耐看一点</li>
+<li>字号：视个人情况而定，个人偏向15号</li>
+<li>在终端配置文件中修改，以osx为例，<em>终端&gt;偏好设置&gt;描述文件&gt;文本&gt;字体</em></li>
+</ul>
+</li>
+<li><p>颜色</p>
+<ul>
+<li><p>终端背景颜色或图片</p>
+<ul>
+<li>和修改字体一样，在终端配置文件中修改，以osx为例，<em>终端&gt;偏好设置&gt;描述文件&gt;文本&gt;字体</em></li>
+</ul>
+</li>
+<li><p>终端颜色支持</p>
+<ul>
+<li><p>这点确实要特别注意，我们使用的终端实际上是伪终端或者叫模拟终端，所以这个软件是可以模拟多种上古终端的，但是不改声明的话，他默认模拟的终端一般都是支持8*2种颜色，那我们其他配置再眼花缭乱也没有，这个终端只能显示16种颜色</p>
+<p> <img src="/img/term_config.png" alt="term_config"></p>
+<p>所以这个地方一定要声明为256color的！！！</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>prompt提示符</p>
+<ul>
+<li><p>prompt提示符是shell解释器的输出，所以需要修改shell解释器配置文件</p>
+</li>
+<li><p>以bash为例：在<em>~/.bash_profile</em> 中修改PS1环境变量即可。例如：</p>
+</li>
+<li><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PS1=&#34;\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ &#34;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>更详细定制的配置方法网上很多，参见<a href="https://linuxconfig.org/bash-prompt-basics" target="_blank" rel="external">https://linuxconfig.org/bash-prompt-basics</a></p>
+</li>
+<li><p>推荐一个可拖动的网站，<a href="http://bashrcgenerator.com/" target="_blank" rel="external">http://bashrcgenerator.com/</a></p>
+</li>
+</ul>
+</li>
+<li><p>editor（vim，emac）</p>
+<ul>
+<li><p>同理，编辑器的输出设置要在编辑器的配置文件中设置，~/.vimrc中 配置</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colorscheme theme</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>vim 自带多种主题可供选择，路径为 <em>/usr/share/vim/vim7x/colors</em></p>
+</li>
+<li><p>推荐一个vim的主题网站，<a href="http://vimcolors.com/" target="_blank" rel="external">http://vimcolors.com/</a><br>主题下载后放入~/.vim/colors中，修改vimrc配置即可使用</p>
+</li>
+</ul>
+</li>
+<li><p>常用软件（ls, grep, tmux）</p>
+<ul>
+<li>像ls这种常用软件，颜色格式的输出是有必要的，但是每个软件的配置不太一样，ls需要配置LSCOLORS环境变量，而grep的环境变量是GREP_COLOR</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>别名</p>
+<ul>
+<li><p>这个根据个人习惯，比较通用的比如</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias ll=&#34;ls -hlF&#34;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="但是我只想选择">但是我只想选择</h4><p>说了这么多，可能对于很多人来说（比如前段开发），并不需要了解这些，只想用的舒服就好了，有没有简单的方式只要点几下就可以做出一个很完善的终端呢？当然可以…</p>
+<ul>
+<li><p>终端</p>
+<p> <img src="/img/term_file.png" alt="term_file"></p>
+<p>以osx默认终端为例，我们可以看到其实所有配置都在一个叫“描述文件”的选项中，并且，我们可以看到下边的设置，描述文件是可以导出的，那么毫无疑问，github上这些描述文件模板会非常多，总有一款适合你。</p>
+<p>详情参见<a href="https://github.com/lysyi3m/osx-terminal-themes" target="_blank" rel="external">https://github.com/lysyi3m/osx-terminal-themes</a></p>
+<p>见到喜欢的主题，下载后双击或者导入都可以。</p>
+<ul>
+<li><p>iterm2</p>
+<p>如果你想体验更多的配置选项，已经更多拓展功能，可以尝试iterm2，个人觉得分屏功能很不错，用了以后会觉得tmux有点鸡肋了。</p>
+</li>
+</ul>
+</li>
+<li><p>选择zsh</p>
+<p>选择zsh并不是因为zsh从零开始配置比bash容易很多，而是因为zsh的插件系统，导致网上有很多可供选择的模板，让我们轻松定制。比如</p>
+<ul>
+<li>oh-my-zsh,  <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="external">https://github.com/robbyrussell/oh-my-zsh</a> 只要运行一行安装指令，什么语法高亮，自动补全，不同软件甚至git的配置统统都有了，非常强大。</li>
+<li>Prezto,<a href="https://github.com/sorin-ionescu/prezto" target="_blank" rel="external">https://github.com/sorin-ionescu/prezto</a> 如果你觉得oh-my-zsh功能太多，并且有点卡或者有点慢了，可以试试Prezto，这个可以认为是一个速度更快的oh-my-zsh，但是缺陷是插件没有oh-my-zsh多。</li>
+</ul>
+<p>​</p>
+</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="当我们在谈论终端时，我们在谈些什么">当我们在谈论终端时，我们在谈些什么</h2><p>程序员经常使用终端，甚至只在终端下工作，那么终端的顺手程度就很重要了。不可避免的，大多数程序员都掌握了配置终端的技巧，但从目前我看到的文章来看，没有比较系统的总结。本文试图通过]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Redis实践——前言]]></title>
+    <link href="http://yoursite.com/2016/06/20/Redis%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94%E5%89%8D%E8%A8%80/"/>
+    <id>http://yoursite.com/2016/06/20/Redis实践——前言/</id>
+    <published>2016-06-20T13:34:31.000Z</published>
+    <updated>2016-07-07T08:05:49.000Z</updated>
+    <content type="html"><![CDATA[<p>现在工作中用redis比较多，为了进度也是用的很随便，一直想做个梳理，总结归纳一下redis使用方法。在这里也是挖个坑，接下来想写一个系列，主要是通过实际的应用出发，姑且记录redis的一些使用经验，希望以后能真正总结出一种套路或者说规范。</p>
+<p>大学时我们都学过数据库理论，严格讲应该叫关系数据库理论。经过多年发展, 关系数据库有系统的方法理论，我们常用的梳理关系方法用E-R图，评价标准可以用范式理论。<br>与此相比，nosql由于设计的多样性，使用方法上更多的是和应用场景相关，更多使用依赖个人喜好，这个就造成了一些混乱, 下面我会按照主题，总结下可能出现的一些混乱点，得出一些个人结论。</p>
+<p>以下是相关的主题：</p>
+<p>基础篇</p>
+<ul>
+<li>redis提供的数据结构</li>
+<li>redis实用特性：事务，pipline，script<br>要使用好redis，其实无外乎两点，第一点，掌握基本数据结构提供的功能和使用场景，这个网上内容很多，概念不想多讲，我会在最后的实例篇中进行说明。<br>另外就一个，就是除了数据机构的特性了，这个我简单介绍常用的并且容易混淆的三个特性，事物，pipeline和script。</li>
+</ul>
+<p>规范篇</p>
+<ul>
+<li>key名称的设计规范</li>
+</ul>
+<p>实例篇</p>
+<ul>
+<li>json和map对比</li>
+<li>任务队列的设计</li>
+<li>队列消费方式对比</li>
+<li>任务调度服务设计(zset)</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>现在工作中用redis比较多，为了进度也是用的很随便，一直想做个梳理，总结归纳一下redis使用方法。在这里也是挖个坑，接下来想写一个系列，主要是通过实际的应用出发，姑且记录redis的一些使用经验，希望以后能真正总结出一种套路或者说规范。</p>
+<p>大学时我们都学过数]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[python2 json的大坑]]></title>

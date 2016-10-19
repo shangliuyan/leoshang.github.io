@@ -1,0 +1,710 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Leo Shang 的 BLOG" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="当我们在谈论终端时，我们在谈些什么程序员经常使用终端，甚至只在终端下工作，那么终端的顺手程度就很重要了。不可避免的，大多数程序员都掌握了配置终端的技巧，但从目前我看到的文章来看，没有比较系统的总结。本文试图通过梳理终端相关的背景知识，整理一个清晰的配置脉络。
+我们配置的是终端，还是shell？通常我们说配置终端的时候，其实隐含的意思是配置shell解释器和终端（terminal），以及常用软件（l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="当我们在谈论配置终端，我们在谈些什么">
+<meta property="og:url" content="http://yoursite.com/2016/10/20/当我们在谈论配置终端，我们在谈些什么/index.html">
+<meta property="og:site_name" content="Leo Shang 的 BLOG">
+<meta property="og:description" content="当我们在谈论终端时，我们在谈些什么程序员经常使用终端，甚至只在终端下工作，那么终端的顺手程度就很重要了。不可避免的，大多数程序员都掌握了配置终端的技巧，但从目前我看到的文章来看，没有比较系统的总结。本文试图通过梳理终端相关的背景知识，整理一个清晰的配置脉络。
+我们配置的是终端，还是shell？通常我们说配置终端的时候，其实隐含的意思是配置shell解释器和终端（terminal），以及常用软件（l">
+<meta property="og:image" content="http://yoursite.com/img/Stdstreams-notitle.svg">
+<meta property="og:image" content="http://yoursite.com/img/term_color.png">
+<meta property="og:image" content="http://yoursite.com/img/term_config.png">
+<meta property="og:image" content="http://yoursite.com/img/term_file.png">
+<meta property="og:updated_time" content="2016-10-19T18:10:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="当我们在谈论配置终端，我们在谈些什么">
+<meta name="twitter:description" content="当我们在谈论终端时，我们在谈些什么程序员经常使用终端，甚至只在终端下工作，那么终端的顺手程度就很重要了。不可避免的，大多数程序员都掌握了配置终端的技巧，但从目前我看到的文章来看，没有比较系统的总结。本文试图通过梳理终端相关的背景知识，整理一个清晰的配置脉络。
+我们配置的是终端，还是shell？通常我们说配置终端的时候，其实隐含的意思是配置shell解释器和终端（terminal），以及常用软件（l">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/20/当我们在谈论配置终端，我们在谈些什么/"/>
+
+  <title> 当我们在谈论配置终端，我们在谈些什么 | Leo Shang 的 BLOG </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Leo Shang 的 BLOG</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">随笔</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                当我们在谈论配置终端，我们在谈些什么
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-20T01:53:45+08:00" content="2016-10-20">
+              2016-10-20
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/20/当我们在谈论配置终端，我们在谈些什么/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/20/当我们在谈论配置终端，我们在谈些什么/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="当我们在谈论终端时，我们在谈些什么">当我们在谈论终端时，我们在谈些什么</h2><p>程序员经常使用终端，甚至只在终端下工作，那么终端的顺手程度就很重要了。不可避免的，大多数程序员都掌握了配置终端的技巧，但从目前我看到的文章来看，没有比较系统的总结。本文试图通过梳理终端相关的背景知识，整理一个清晰的配置脉络。</p>
+<h4 id="我们配置的是终端，还是shell？">我们配置的是终端，还是shell？</h4><p>通常我们说配置终端的时候，其实隐含的意思是配置shell解释器和终端（terminal），以及常用软件（ls，grep）。为什么这三者都要配置呢？什么配置是属于shell解释器的，什么是由终端软件管理的，什么是软件的配置呢？</p>
+<p>想要弄明白这些问题，就需要我们知道他们之间的关系。</p>
+<p> <img src="/img/Stdstreams-notitle.svg" alt="Stdstreams-notitle"></p>
+<p>shell解释器是terminal进程的一个子进程，shell解释器通过标准输入和标准输出与terminal设备文件交互的，在shell下运行的软件，是shell的子进程，也是通过标准输入输出和terminal设备文件进行交互。值得一提，在类UNIX下，虚拟终端也是一个设备，设备文件形如<em>/dev/ttys</em>。</p>
+<p>明白这个关系，我们就知道配置的边界了。比如我想修改一下显示的字体，很显然，shell的标准输出不可能输出字体格式的，我们需要在terminal的配置里找到字体配置需要的字体。</p>
+<blockquote>
+<p>需要注意的是，shell解释器并不特指bash，一台类UNIX操作系统，往往可以支持多种shell解释器。通过<code>cat /etc/shells</code> 可以查看本机支持的shell解释器。另外，不同shell解释器的配置文件也不一样，以bash为例，<em>~/.bash_profile ~/.bashrc</em>是它的配置文件，而zsh则是<em>~/.zsh_profile ~/.zshrc</em></p>
+</blockquote>
+<h4 id="颜色是怎么显示出来的？">颜色是怎么显示出来的？</h4><p>毫无疑问，配置终端的重点在于颜色搭配和语法高亮。既然终端和进程交互是标准输入输出，那标准输出可不可以输出颜色属性呢？</p>
+<p>答案是:<a href="https://en.wikipedia.org/wiki/ANSI_escape_code" target="_blank" rel="external">ANSI转义序列(escape code)</a> 。形如:ESC+[（一般显示为 ^[[）的字符序列可实现在屏幕上定位光标、改变输出字符颜色等功能。例如在bash中， <code>ESC</code> 字符可以用一下三种转义形式输出:</p>
+<ul>
+<li><code>\e</code></li>
+<li><code>\033</code></li>
+<li><code>\x1B</code></li>
+</ul>
+<p>我们可以用”<esc>[<em>Color Code</em>m”    的形式输出颜色，例如：</esc></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printf &#34;Default \e[91mLight red&#34;</span><br></pre></td></tr></table></figure>
+<p>终端的显示为：</p>
+<p> <img src="/img/term_color.png" alt="terminal color"></p>
+<p>同理，所谓的终端提示符颜色，以及各种软件结果的输出，只要加上颜色转义，就会被终端显示为对应的颜色。理论上，我们任何的输出都可以自定义颜色，例如下面的方法，将make日志的不同级别分颜色打印出来。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make 2&#62;&#38;1 | sed -e &#39;s/.*\bWARN.*/\x1b[7m&#38;\x1b[0m/i&#39; -e &#39;s/.*\bERR.*/\x1b[93;41m&#38;\x1b[0m/i&#39;</span><br></pre></td></tr></table></figure>
+<p>了解到这些，就明白为什么 <em>ls</em> 指令为什么默认没有颜色，但 <em>ls -G</em> 就有颜色了，输出加入颜色转义了嘛。</p>
+<h4 id="我们需要配置终端的什么？">我们需要配置终端的什么？</h4><p>下面我列了下，一般我们需要做的配置清单</p>
+<ul>
+<li><p>字体字号</p>
+<ul>
+<li>字体：推荐苹果的两代字体 Monaco和Menlo，Monaco第一眼看起来真是惊艳，但普遍反映Menlo更加耐看一点</li>
+<li>字号：视个人情况而定，个人偏向15号</li>
+<li>在终端配置文件中修改，以osx为例，<em>终端&gt;偏好设置&gt;描述文件&gt;文本&gt;字体</em></li>
+</ul>
+</li>
+<li><p>颜色</p>
+<ul>
+<li><p>终端背景颜色或图片</p>
+<ul>
+<li>和修改字体一样，在终端配置文件中修改，以osx为例，<em>终端&gt;偏好设置&gt;描述文件&gt;文本&gt;字体</em></li>
+</ul>
+</li>
+<li><p>终端颜色支持</p>
+<ul>
+<li><p>这点确实要特别注意，我们使用的终端实际上是伪终端或者叫模拟终端，所以这个软件是可以模拟多种上古终端的，但是不改声明的话，他默认模拟的终端一般都是支持8*2种颜色，那我们其他配置再眼花缭乱也没有，这个终端只能显示16种颜色</p>
+<p> <img src="/img/term_config.png" alt="term_config"></p>
+<p>所以这个地方一定要声明为256color的！！！</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>prompt提示符</p>
+<ul>
+<li><p>prompt提示符是shell解释器的输出，所以需要修改shell解释器配置文件</p>
+</li>
+<li><p>以bash为例：在<em>~/.bash_profile</em> 中修改PS1环境变量即可。例如：</p>
+</li>
+<li><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PS1=&#34;\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ &#34;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>更详细定制的配置方法网上很多，参见<a href="https://linuxconfig.org/bash-prompt-basics" target="_blank" rel="external">https://linuxconfig.org/bash-prompt-basics</a></p>
+</li>
+<li><p>推荐一个可拖动的网站，<a href="http://bashrcgenerator.com/" target="_blank" rel="external">http://bashrcgenerator.com/</a></p>
+</li>
+</ul>
+</li>
+<li><p>editor（vim，emac）</p>
+<ul>
+<li><p>同理，编辑器的输出设置要在编辑器的配置文件中设置，~/.vimrc中 配置</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colorscheme theme</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>vim 自带多种主题可供选择，路径为 <em>/usr/share/vim/vim7x/colors</em></p>
+</li>
+<li><p>推荐一个vim的主题网站，<a href="http://vimcolors.com/" target="_blank" rel="external">http://vimcolors.com/</a><br>主题下载后放入~/.vim/colors中，修改vimrc配置即可使用</p>
+</li>
+</ul>
+</li>
+<li><p>常用软件（ls, grep, tmux）</p>
+<ul>
+<li>像ls这种常用软件，颜色格式的输出是有必要的，但是每个软件的配置不太一样，ls需要配置LSCOLORS环境变量，而grep的环境变量是GREP_COLOR</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>别名</p>
+<ul>
+<li><p>这个根据个人习惯，比较通用的比如</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias ll=&#34;ls -hlF&#34;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="但是我只想选择">但是我只想选择</h4><p>说了这么多，可能对于很多人来说（比如前段开发），并不需要了解这些，只想用的舒服就好了，有没有简单的方式只要点几下就可以做出一个很完善的终端呢？当然可以…</p>
+<ul>
+<li><p>终端</p>
+<p> <img src="/img/term_file.png" alt="term_file"></p>
+<p>以osx默认终端为例，我们可以看到其实所有配置都在一个叫“描述文件”的选项中，并且，我们可以看到下边的设置，描述文件是可以导出的，那么毫无疑问，github上这些描述文件模板会非常多，总有一款适合你。</p>
+<p>详情参见<a href="https://github.com/lysyi3m/osx-terminal-themes" target="_blank" rel="external">https://github.com/lysyi3m/osx-terminal-themes</a></p>
+<p>见到喜欢的主题，下载后双击或者导入都可以。</p>
+<ul>
+<li><p>iterm2</p>
+<p>如果你想体验更多的配置选项，已经更多拓展功能，可以尝试iterm2，个人觉得分屏功能很不错，用了以后会觉得tmux有点鸡肋了。</p>
+</li>
+</ul>
+</li>
+<li><p>选择zsh</p>
+<p>选择zsh并不是因为zsh从零开始配置比bash容易很多，而是因为zsh的插件系统，导致网上有很多可供选择的模板，让我们轻松定制。比如</p>
+<ul>
+<li>oh-my-zsh,  <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="external">https://github.com/robbyrussell/oh-my-zsh</a> 只要运行一行安装指令，什么语法高亮，自动补全，不同软件甚至git的配置统统都有了，非常强大。</li>
+<li>Prezto,<a href="https://github.com/sorin-ionescu/prezto" target="_blank" rel="external">https://github.com/sorin-ionescu/prezto</a> 如果你觉得oh-my-zsh功能太多，并且有点卡或者有点慢了，可以试试Prezto，这个可以认为是一个速度更快的oh-my-zsh，但是缺陷是插件没有oh-my-zsh多。</li>
+</ul>
+<p>​</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/20/Redis实践——前言/" rel="next" title="Redis实践——前言">
+                <i class="fa fa-chevron-left"></i> Redis实践——前言
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="Leo Shang" />
+          <p class="site-author-name" itemprop="name">Leo Shang</p>
+          <p class="site-description motion-element" itemprop="description">永远年轻, 永远热泪盈眶</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#当我们在谈论终端时，我们在谈些什么"><span class="nav-number">1.</span> <span class="nav-text">当我们在谈论终端时，我们在谈些什么</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#我们配置的是终端，还是shell？"><span class="nav-number">1.0.1.</span> <span class="nav-text">我们配置的是终端，还是shell？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#颜色是怎么显示出来的？"><span class="nav-number">1.0.2.</span> <span class="nav-text">颜色是怎么显示出来的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#我们需要配置终端的什么？"><span class="nav-number">1.0.3.</span> <span class="nav-text">我们需要配置终端的什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#但是我只想选择"><span class="nav-number">1.0.4.</span> <span class="nav-text">但是我只想选择</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo Shang</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'leoshang';
+      var disqus_identifier = '2016/10/20/当我们在谈论配置终端，我们在谈些什么/';
+      var disqus_title = "当我们在谈论配置终端，我们在谈些什么";
+      var disqus_url = 'http://yoursite.com/2016/10/20/当我们在谈论配置终端，我们在谈些什么/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,11 +1,16 @@
 <!doctype html>
-<html class="theme-next use-motion theme-next-mist">
-<head>
+
+
+
   
 
-<meta charset="UTF-8"/>
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
 
 
 <meta http-equiv="Cache-Control" content="no-transform" />
@@ -16,19 +21,56 @@
 
 
 
-  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
 
 
 
 
-<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
 
 
-    <meta name="description" content="永远年轻, 永远热泪盈眶" />
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
-  <meta name="keywords" content="Hexo,next" />
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
 
 
 
@@ -36,7 +78,12 @@
 
 
 
-  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
 
 
 <meta name="description" content="永远年轻, 永远热泪盈眶">
@@ -50,47 +97,65 @@
 <meta name="twitter:description" content="永远年轻, 永远热泪盈眶">
 
 
+
 <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: 'post'
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
   };
 </script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/"/>
 
   <title> Leo Shang 的 BLOG </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-  <!--[if lte IE 8]>
-  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
-    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
-      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
-           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
-           style='margin-left:auto;margin-right:auto;display: block;'/>
-    </a>
-  </div>
-<![endif]-->
   
 
 
 
-  <div class="container one-column 
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left 
    page-home 
-">
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><h1 class="site-meta">
-  <span class="logo-line-before"><i></i></span>
-  <a href="/" class="brand" rel="start">
-      <span class="logo">
-        <i class="icon-next-logo"></i>
-      </span>
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
       <span class="site-title">Leo Shang 的 BLOG</span>
-  </a>
-  <span class="logo-line-after"><i></i></span>
-</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">随笔</p>
+</div>
 
 <div class="site-nav-toggle">
   <button>
@@ -104,12 +169,14 @@
   
 
   
-    <ul id="menu" class="menu ">
+    <ul id="menu" class="menu">
       
         
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
-            <i class="menu-item-icon icon-next-home"></i> <br />
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
             首页
           </a>
         </li>
@@ -117,7 +184,9 @@
         
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
-            <i class="menu-item-icon icon-next-archives"></i> <br />
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
             归档
           </a>
         </li>
@@ -125,13 +194,14 @@
         
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
-            <i class="menu-item-icon icon-next-tags"></i> <br />
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
             标签
           </a>
         </li>
       
 
-      
       
     </ul>
   
@@ -144,59 +214,416 @@
 
     <main id="main" class="main">
       <div class="main-inner">
-        <div id="content" class="content"> 
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
   <section id="posts" class="posts-expand">
     
       
 
+  
+  
+
+  
+  
+  
+
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/06/15/python2-json的大坑/" itemprop="url">
-                python2 json的大坑
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-06-15T21:59:57+08:00" content="2016-06-15">
-            2016-06-15
-          </time>
-        </span>
+    
+      <header class="post-header">
 
         
-
         
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2016/06/15/python2-json的大坑/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/06/15/python2-json的大坑/" itemprop="commentsCount"></span>
-            </a>
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/20/当我们在谈论配置终端，我们在谈些什么/" itemprop="url">
+                  当我们在谈论配置终端，我们在谈些什么
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-20T01:53:45+08:00" content="2016-10-20">
+              2016-10-20
+            </time>
           </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/20/当我们在谈论配置终端，我们在谈些什么/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/20/当我们在谈论配置终端，我们在谈些什么/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="当我们在谈论终端时，我们在谈些什么">当我们在谈论终端时，我们在谈些什么</h2><p>程序员经常使用终端，甚至只在终端下工作，那么终端的顺手程度就很重要了。不可避免的，大多数程序员都掌握了配置终端的技巧，但从目前我看到的文章来看，没有比较系统的总结。本文试图通过梳理终端相关的背景知识，整理一个清晰的配置脉络。</p>
+<h4 id="我们配置的是终端，还是shell？">我们配置的是终端，还是shell？</h4><p>通常我们说配置终端的时候，其实隐含的意思是配置shell解释器和终端（terminal），以及常用软件（ls，grep）。为什么这三者都要配置呢？什么配置是属于shell解释器的，什么是由终端软件管理的，什么是软件的配置呢？</p>
+<p>想要弄明白这些问题，就需要我们知道他们之间的关系。</p>
+<p> <img src="/img/Stdstreams-notitle.svg" alt="Stdstreams-notitle"></p>
+<p>shell解释器是terminal进程的一个子进程，shell解释器通过标准输入和标准输出与terminal设备文件交互的，在shell下运行的软件，是shell的子进程，也是通过标准输入输出和terminal设备文件进行交互。值得一提，在类UNIX下，虚拟终端也是一个设备，设备文件形如<em>/dev/ttys</em>。</p>
+<p>明白这个关系，我们就知道配置的边界了。比如我想修改一下显示的字体，很显然，shell的标准输出不可能输出字体格式的，我们需要在terminal的配置里找到字体配置需要的字体。</p>
+<blockquote>
+<p>需要注意的是，shell解释器并不特指bash，一台类UNIX操作系统，往往可以支持多种shell解释器。通过<code>cat /etc/shells</code> 可以查看本机支持的shell解释器。另外，不同shell解释器的配置文件也不一样，以bash为例，<em>~/.bash_profile ~/.bashrc</em>是它的配置文件，而zsh则是<em>~/.zsh_profile ~/.zshrc</em></p>
+</blockquote>
+<h4 id="颜色是怎么显示出来的？">颜色是怎么显示出来的？</h4><p>毫无疑问，配置终端的重点在于颜色搭配和语法高亮。既然终端和进程交互是标准输入输出，那标准输出可不可以输出颜色属性呢？</p>
+<p>答案是:<a href="https://en.wikipedia.org/wiki/ANSI_escape_code" target="_blank" rel="external">ANSI转义序列(escape code)</a> 。形如:ESC+[（一般显示为 ^[[）的字符序列可实现在屏幕上定位光标、改变输出字符颜色等功能。例如在bash中， <code>ESC</code> 字符可以用一下三种转义形式输出:</p>
+<ul>
+<li><code>\e</code></li>
+<li><code>\033</code></li>
+<li><code>\x1B</code></li>
+</ul>
+<p>我们可以用”<esc>[<em>Color Code</em>m”    的形式输出颜色，例如：</esc></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printf &#34;Default \e[91mLight red&#34;</span><br></pre></td></tr></table></figure>
+<p>终端的显示为：</p>
+<p> <img src="/img/term_color.png" alt="terminal color"></p>
+<p>同理，所谓的终端提示符颜色，以及各种软件结果的输出，只要加上颜色转义，就会被终端显示为对应的颜色。理论上，我们任何的输出都可以自定义颜色，例如下面的方法，将make日志的不同级别分颜色打印出来。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make 2&#62;&#38;1 | sed -e &#39;s/.*\bWARN.*/\x1b[7m&#38;\x1b[0m/i&#39; -e &#39;s/.*\bERR.*/\x1b[93;41m&#38;\x1b[0m/i&#39;</span><br></pre></td></tr></table></figure>
+<p>了解到这些，就明白为什么 <em>ls</em> 指令为什么默认没有颜色，但 <em>ls -G</em> 就有颜色了，输出加入颜色转义了嘛。</p>
+<h4 id="我们需要配置终端的什么？">我们需要配置终端的什么？</h4><p>下面我列了下，一般我们需要做的配置清单</p>
+<ul>
+<li><p>字体字号</p>
+<ul>
+<li>字体：推荐苹果的两代字体 Monaco和Menlo，Monaco第一眼看起来真是惊艳，但普遍反映Menlo更加耐看一点</li>
+<li>字号：视个人情况而定，个人偏向15号</li>
+<li>在终端配置文件中修改，以osx为例，<em>终端&gt;偏好设置&gt;描述文件&gt;文本&gt;字体</em></li>
+</ul>
+</li>
+<li><p>颜色</p>
+<ul>
+<li><p>终端背景颜色或图片</p>
+<ul>
+<li>和修改字体一样，在终端配置文件中修改，以osx为例，<em>终端&gt;偏好设置&gt;描述文件&gt;文本&gt;字体</em></li>
+</ul>
+</li>
+<li><p>终端颜色支持</p>
+<ul>
+<li><p>这点确实要特别注意，我们使用的终端实际上是伪终端或者叫模拟终端，所以这个软件是可以模拟多种上古终端的，但是不改声明的话，他默认模拟的终端一般都是支持8*2种颜色，那我们其他配置再眼花缭乱也没有，这个终端只能显示16种颜色</p>
+<p> <img src="/img/term_config.png" alt="term_config"></p>
+<p>所以这个地方一定要声明为256color的！！！</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>prompt提示符</p>
+<ul>
+<li><p>prompt提示符是shell解释器的输出，所以需要修改shell解释器配置文件</p>
+</li>
+<li><p>以bash为例：在<em>~/.bash_profile</em> 中修改PS1环境变量即可。例如：</p>
+</li>
+<li><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PS1=&#34;\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ &#34;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>更详细定制的配置方法网上很多，参见<a href="https://linuxconfig.org/bash-prompt-basics" target="_blank" rel="external">https://linuxconfig.org/bash-prompt-basics</a></p>
+</li>
+<li><p>推荐一个可拖动的网站，<a href="http://bashrcgenerator.com/" target="_blank" rel="external">http://bashrcgenerator.com/</a></p>
+</li>
+</ul>
+</li>
+<li><p>editor（vim，emac）</p>
+<ul>
+<li><p>同理，编辑器的输出设置要在编辑器的配置文件中设置，~/.vimrc中 配置</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colorscheme theme</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>vim 自带多种主题可供选择，路径为 <em>/usr/share/vim/vim7x/colors</em></p>
+</li>
+<li><p>推荐一个vim的主题网站，<a href="http://vimcolors.com/" target="_blank" rel="external">http://vimcolors.com/</a><br>主题下载后放入~/.vim/colors中，修改vimrc配置即可使用</p>
+</li>
+</ul>
+</li>
+<li><p>常用软件（ls, grep, tmux）</p>
+<ul>
+<li>像ls这种常用软件，颜色格式的输出是有必要的，但是每个软件的配置不太一样，ls需要配置LSCOLORS环境变量，而grep的环境变量是GREP_COLOR</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>别名</p>
+<ul>
+<li><p>这个根据个人习惯，比较通用的比如</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias ll=&#34;ls -hlF&#34;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="但是我只想选择">但是我只想选择</h4><p>说了这么多，可能对于很多人来说（比如前段开发），并不需要了解这些，只想用的舒服就好了，有没有简单的方式只要点几下就可以做出一个很完善的终端呢？当然可以…</p>
+<ul>
+<li><p>终端</p>
+<p> <img src="/img/term_file.png" alt="term_file"></p>
+<p>以osx默认终端为例，我们可以看到其实所有配置都在一个叫“描述文件”的选项中，并且，我们可以看到下边的设置，描述文件是可以导出的，那么毫无疑问，github上这些描述文件模板会非常多，总有一款适合你。</p>
+<p>详情参见<a href="https://github.com/lysyi3m/osx-terminal-themes" target="_blank" rel="external">https://github.com/lysyi3m/osx-terminal-themes</a></p>
+<p>见到喜欢的主题，下载后双击或者导入都可以。</p>
+<ul>
+<li><p>iterm2</p>
+<p>如果你想体验更多的配置选项，已经更多拓展功能，可以尝试iterm2，个人觉得分屏功能很不错，用了以后会觉得tmux有点鸡肋了。</p>
+</li>
+</ul>
+</li>
+<li><p>选择zsh</p>
+<p>选择zsh并不是因为zsh从零开始配置比bash容易很多，而是因为zsh的插件系统，导致网上有很多可供选择的模板，让我们轻松定制。比如</p>
+<ul>
+<li>oh-my-zsh,  <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="external">https://github.com/robbyrussell/oh-my-zsh</a> 只要运行一行安装指令，什么语法高亮，自动补全，不同软件甚至git的配置统统都有了，非常强大。</li>
+<li>Prezto,<a href="https://github.com/sorin-ionescu/prezto" target="_blank" rel="external">https://github.com/sorin-ionescu/prezto</a> 如果你觉得oh-my-zsh功能太多，并且有点卡或者有点慢了，可以试试Prezto，这个可以认为是一个速度更快的oh-my-zsh，但是缺陷是插件没有oh-my-zsh多。</li>
+</ul>
+<p>​</p>
+</li>
+</ul>
+
           
         
-      </div>
-    </header>
+      
+    </div>
 
-    <div class="post-body">
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/06/20/Redis实践——前言/" itemprop="url">
+                  Redis实践——前言
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-20T21:34:31+08:00" content="2016-06-20">
+              2016-06-20
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/20/Redis实践——前言/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/06/20/Redis实践——前言/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><h2 id="介绍一下背景">介绍一下背景</h2><p>最近项目中有一个接口，是通过redis队列做的。我将对方需要的数据通过json 字符串的形式，push到redis list队列中，对方监听并消费(题外话, 我对这种形式的交互有点看法吧，双方既然是接口，但是很难保证格式的统一，比使用rpc框架强验证风险大的多)。</p>
+          
+            <p>现在工作中用redis比较多，为了进度也是用的很随便，一直想做个梳理，总结归纳一下redis使用方法。在这里也是挖个坑，接下来想写一个系列，主要是通过实际的应用出发，姑且记录redis的一些使用经验，希望以后能真正总结出一种套路或者说规范。</p>
+<p>大学时我们都学过数据库理论，严格讲应该叫关系数据库理论。经过多年发展, 关系数据库有系统的方法理论，我们常用的梳理关系方法用E-R图，评价标准可以用范式理论。<br>与此相比，nosql由于设计的多样性，使用方法上更多的是和应用场景相关，更多使用依赖个人喜好，这个就造成了一些混乱, 下面我会按照主题，总结下可能出现的一些混乱点，得出一些个人结论。</p>
+<p>以下是相关的主题：</p>
+<p>基础篇</p>
+<ul>
+<li>redis提供的数据结构</li>
+<li>redis实用特性：事务，pipline，script<br>要使用好redis，其实无外乎两点，第一点，掌握基本数据结构提供的功能和使用场景，这个网上内容很多，概念不想多讲，我会在最后的实例篇中进行说明。<br>另外就一个，就是除了数据机构的特性了，这个我简单介绍常用的并且容易混淆的三个特性，事物，pipeline和script。</li>
+</ul>
+<p>规范篇</p>
+<ul>
+<li>key名称的设计规范</li>
+</ul>
+<p>实例篇</p>
+<ul>
+<li>json和map对比</li>
+<li>任务队列的设计</li>
+<li>队列消费方式对比</li>
+<li>任务调度服务设计(zset)</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/06/15/python2-json的大坑/" itemprop="url">
+                  python2 json的大坑
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-15T21:59:57+08:00" content="2016-06-15">
+              2016-06-15
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/15/python2-json的大坑/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/06/15/python2-json的大坑/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="介绍一下背景">介绍一下背景</h2><p>最近项目中有一个接口，是通过redis队列做的。我将对方需要的数据通过json 字符串的形式，push到redis list队列中，对方监听并消费(题外话, 我对这种形式的交互有点看法吧，双方既然是接口，但是很难保证格式的统一，比使用rpc框架强验证风险大的多)。</p>
 <p>由于对端也是用python做的消费者，所以也是相安无事。随着一个需求的变更，我在自己调试pop的数据发现，我写的json字符串是，酱事儿的:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;"<span class="attribute">title</span>": <span class="value"><span class="string">"\\u6211\\u7231\\u5317\\u4eac\\u5929\\u5b89\\u95e8"</span></span>&#125;</span><br></pre></td></tr></table></figure></p>
 <p>当时我就懵逼了，这是什么鬼…<br>很显然这个是unicode字符串嘛，但是我明明就编码成了UTF8啦，怎么最后是这个鬼样子，更奇怪的是对方能正确解码吗？这明明是四不像啊。</p>
 <p>我试着自己重现了整个过程。<br>首先，我将utf8形式的字符串 <em>我爱北京天安门</em> dumps成json:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">10</span>]: json.dumps(&#123;<span class="string">"title"</span>:<span class="string">"我爱北京天安门"</span>&#125;)</span><br><span class="line">Out[<span class="number">10</span>]: <span class="string">'&#123;"title": "\\u6211\\u7231\\u5317\\u4eac\\u5929\\u5b89\\u95e8"&#125;'</span></span><br></pre></td></tr></table></figure></p>
@@ -232,8 +659,17 @@
 <p><strong>为了能将json字符串通用的和其他语言交换，我们不得不保证，原始python数据类型必须是统一的。要么全是UTF8的str类型，要么全部是unicode，最后在encode为utf8, 否则就会有异常</strong> 这个也是动态类型要付出的代价吧。</p>
 <h2 id="为什么loads回来的数据全是unicode形式？">为什么loads回来的数据全是unicode形式？</h2><p>看下官方文档：<br><img src="/img/python_decode.png" alt="python decode"><br>与dumps相反, json.loads 方法做的就是将json数据格式按照上图的映射方式转换为python类型。我们可以看json string 转换回来只有一种格式，那就是unicode，这样就能解释我们看到的现象了，就连dict key都是unicode的。</p>
 <h2 id="好麻烦啊，怎么根本的解决这个问题呢？">好麻烦啊，怎么根本的解决这个问题呢？</h2><p><strong>答： 使用python3 </strong></p>
-</span>
+
+          
         
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
       
     </div>
 
@@ -253,54 +689,77 @@
     
       
 
+  
+  
+
+  
+  
+  
+
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/07/19/tornado的网络模型/" itemprop="url">
-                tornado的网络模型
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-07-19T18:36:45+08:00" content="2015-07-19">
-            2015-07-19
-          </time>
-        </span>
+    
+      <header class="post-header">
 
         
-
         
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2015/07/19/tornado的网络模型/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/19/tornado的网络模型/" itemprop="commentsCount"></span>
-            </a>
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/07/19/tornado的网络模型/" itemprop="url">
+                  tornado的网络模型
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-07-19T18:36:45+08:00" content="2015-07-19">
+              2015-07-19
+            </time>
           </span>
+
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/07/19/tornado的网络模型/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/19/tornado的网络模型/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><p>在网站逐步发展的过程中，很可能就会遇到<a href="http://www.kegel.com/c10k.html" target="_blank" rel="external">C10K</a>问题，python中一个比较流行的解决方式是通过tornado这个web server解决。<br>tornado是一个非阻塞的Web服务器，下面我会结合源码，对tornado进行一下结构来说明。</p>
+          
+            <p>在网站逐步发展的过程中，很可能就会遇到<a href="http://www.kegel.com/c10k.html" target="_blank" rel="external">C10K</a>问题，python中一个比较流行的解决方式是通过tornado这个web server解决。<br>tornado是一个非阻塞的Web服务器，下面我会结合源码，对tornado进行一下结构来说明。</p>
 <h2 id="基础理论">基础理论</h2><p>在这之前，我们需要先弄清楚几个概念，便于我们理解tornado。</p>
 <ul>
 <li>同步、异步、阻塞和非阻塞这几个概念的区别和联系。这个问题网上内容很多，可以看下<a href="http://www.zhihu.com/question/19732473" target="_blank" rel="external">知乎这个问题的讨论</a>，个人认为还是不错的，几个高票的回答从不同角度说明了问题，看过后应该会有比较清晰的认识。</li>
@@ -332,8 +791,17 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">start</span><span class="params">(self)</span>:</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    ...</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            event_pairs = self._impl.poll(poll_timeout)</span><br><span class="line">        <span class="keyword">except</span> Exception, e:</span><br><span class="line">            <span class="comment"># Depending on python version and IOLoop implementation,</span></span><br><span class="line">            <span class="comment"># different exception types may be thrown and there are</span></span><br><span class="line">            <span class="comment"># two ways EINTR might be signaled:</span></span><br><span class="line">            <span class="comment"># * e.errno == errno.EINTR</span></span><br><span class="line">            <span class="comment"># * e.args is like (errno.EINTR, 'Interrupted system call')</span></span><br><span class="line">            <span class="keyword">if</span> (getattr(e, <span class="string">'errno'</span>) == errno.EINTR <span class="keyword">or</span></span><br><span class="line">                (isinstance(getattr(e, <span class="string">'args'</span>), tuple) <span class="keyword">and</span></span><br><span class="line">                 len(e.args) == <span class="number">2</span> <span class="keyword">and</span> e.args[<span class="number">0</span>] == errno.EINTR)):</span><br><span class="line">                logging.warning(<span class="string">"Interrupted system call"</span>, exc_info=<span class="number">1</span>)</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">raise</span></span><br><span class="line">    ...</span><br><span class="line">        self._events.update(event_pairs)</span><br><span class="line">        <span class="keyword">while</span> self._events:</span><br><span class="line">            fd, events = self._events.popitem()</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                self._handlers[fd](fd, events)</span><br><span class="line">            <span class="keyword">except</span> (KeyboardInterrupt, SystemExit):</span><br><span class="line">                <span class="keyword">raise</span></span><br><span class="line">            <span class="keyword">except</span> (OSError, IOError), e:</span><br><span class="line">                <span class="keyword">if</span> e[<span class="number">0</span>] == errno.EPIPE:</span><br><span class="line">                    <span class="comment"># Happens when the client closes the connection</span></span><br><span class="line">                    <span class="keyword">pass</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    logging.error(<span class="string">"Exception in I/O handler for fd %d"</span>,</span><br><span class="line">                                  fd, exc_info=<span class="keyword">True</span>)</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                logging.error(<span class="string">"Exception in I/O handler for fd %d"</span>,</span><br><span class="line">                              fd, exc_info=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
 <p>在这里 <code>event_pairs = self._impl.poll(poll_timeout)</code>，陷入epoll，然后<code>while self._events</code>之后的代码，运行触发事件后回调函数。<br>现在我们通过一张图看看整个流程：<br><img src="/img/tornado-httpserver.png" alt="tornado-httpserver图"></p>
 <h2 id="还有什么">还有什么</h2><p>我们看到在tornado中，无论运行什么库，只要涉及I/O，都要注册到ioloop上，这样才能发挥异步I/O的作用，否则tornado也会阻塞。所以tornado会有很多第三方库，所以在实际使用中，我们有必要学习一下第三方库的使用。</p>
-</span>
+
+          
         
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
       
     </div>
 
@@ -353,54 +821,77 @@
     
       
 
+  
+  
+
+  
+  
+  
+
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/07/06/python的协程/" itemprop="url">
-                python的协程
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-07-06T15:18:35+08:00" content="2015-07-06">
-            2015-07-06
-          </time>
-        </span>
+    
+      <header class="post-header">
 
         
-
         
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2015/07/06/python的协程/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/06/python的协程/" itemprop="commentsCount"></span>
-            </a>
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/07/06/python的协程/" itemprop="url">
+                  python的协程
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-07-06T15:18:35+08:00" content="2015-07-06">
+              2015-07-06
+            </time>
           </span>
+
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/07/06/python的协程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/06/python的协程/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><p>关于python的协程，网上资料还是挺多的，这里说一下我的理解吧。</p>
+          
+            <p>关于python的协程，网上资料还是挺多的，这里说一下我的理解吧。</p>
 <h2 id="什么是协程？">什么是协程？</h2><p>先看一下wiki的定义吧</p>
 <blockquote>
 <p>Coroutines are computer program components that generalize subroutines for nonpreemptive multitasking, by allowing multiple entry points for suspending and resuming execution at certain locations.</p>
@@ -447,8 +938,17 @@
 <li><p>并发<br>  关于并发，最好的例子应该是gevent吧，大家有兴趣可以看下源码。基本的原理是，将函数变为协程，每触发I/O阻塞就yield交出控制权，并将事件注册到epoll，当I/O就绪就是用send方法，传入I/O数据，并恢复逻辑。这么描述其实和tornado、nodejs的网络模型很像，但是协程对于程序员更加友好。tornado和nodejs默认还是通过回调函数完成这个事件循环的，这样代码并不直观，但使用协程可以用同步的方式完成回调函数的工作。</p>
 </li>
 </ul>
-</span>
+
+          
         
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
       
     </div>
 
@@ -468,54 +968,77 @@
     
       
 
+  
+  
+
+  
+  
+  
+
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/07/04/celery有什么难理解的/" itemprop="url">
-                celery有什么难理解的?
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-07-04T14:09:06+08:00" content="2015-07-04">
-            2015-07-04
-          </time>
-        </span>
+    
+      <header class="post-header">
 
         
-
         
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2015/07/04/celery有什么难理解的/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/04/celery有什么难理解的/" itemprop="commentsCount"></span>
-            </a>
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/07/04/celery有什么难理解的/" itemprop="url">
+                  celery有什么难理解的?
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-07-04T14:09:06+08:00" content="2015-07-04">
+              2015-07-04
+            </time>
           </span>
+
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/07/04/celery有什么难理解的/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/04/celery有什么难理解的/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><p>两年前，公司所有的管理后台用的都是django admin，我们遇到一个复杂的需求，需要从django admin调用执行一个大批量处理脚本，并且可以查看执行状态。<br>当时不太了解celery，加上时间紧迫，就没敢冒险。简单说说我们当时是怎么做的，我们把这个脚本做成了command line的形式，django使用python的subprocess调用这个命令，为了满足可以查看状态这个需求，我们单独创建了一个任务表，在启动脚本时先插入数据，完成或者异常都更新这条数据状态，这样在django admin里就能看到执行状态了。<br>这个方法满足了需求，并沿用到现在，但是这里有一个显而易见的硬伤：django必须和这个脚本在同一个服务器上。好吧，毫无可拓展性。<br>其实这个就是一个天然celery使用场景，如果使用celery就可以轻松解决分布拓展问题。</p>
+          
+            <p>两年前，公司所有的管理后台用的都是django admin，我们遇到一个复杂的需求，需要从django admin调用执行一个大批量处理脚本，并且可以查看执行状态。<br>当时不太了解celery，加上时间紧迫，就没敢冒险。简单说说我们当时是怎么做的，我们把这个脚本做成了command line的形式，django使用python的subprocess调用这个命令，为了满足可以查看状态这个需求，我们单独创建了一个任务表，在启动脚本时先插入数据，完成或者异常都更新这条数据状态，这样在django admin里就能看到执行状态了。<br>这个方法满足了需求，并沿用到现在，但是这里有一个显而易见的硬伤：django必须和这个脚本在同一个服务器上。好吧，毫无可拓展性。<br>其实这个就是一个天然celery使用场景，如果使用celery就可以轻松解决分布拓展问题。</p>
 <h2 id="什么是celery？">什么是celery？</h2><p>说了这么多，什么是celery呢？<a href="http://www.celeryproject.org/" target="_blank" rel="external">官网</a>定义：</p>
 <blockquote>
 <p>Celery is an asynchronous task queue/job queue based on distributed message passing.</p>
@@ -554,8 +1077,17 @@
 <p>注意，就是celery.send_task()这个方法解决了producer和consumer的网路拓扑传递数据问题。 </p>
 </li>
 </ol>
-</span>
+
+          
         
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
       
     </div>
 
@@ -575,54 +1107,77 @@
     
       
 
+  
+  
+
+  
+  
+  
+
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/06/29/sqlchemy如何分表/" itemprop="url">
-                sqlalchemy如何分表
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-06-29T21:45:39+08:00" content="2015-06-29">
-            2015-06-29
-          </time>
-        </span>
+    
+      <header class="post-header">
 
         
-
         
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2015/06/29/sqlchemy如何分表/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/29/sqlchemy如何分表/" itemprop="commentsCount"></span>
-            </a>
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/06/29/sqlchemy如何分表/" itemprop="url">
+                  sqlalchemy如何分表
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-06-29T21:45:39+08:00" content="2015-06-29">
+              2015-06-29
+            </time>
           </span>
+
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/06/29/sqlchemy如何分表/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/29/sqlchemy如何分表/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><h2 id="背景">背景</h2><p>话说sqlalchemy真是一个非常好用的库，python orm基本上是舍我其谁了，文档还非常全面，基本上没有什么硬伤，现在也冲出了1.0版本，未来更加值得期待。<br>我最早用django orm，不过很快就觉得很多功能不够用，我当时用的版本是1.3.1，没有<em>bulk insert</em>也没有<em>锁</em>，没有这两个功能，好多应用就没法用django开发了。之后开始接触sqlalchemy，一直用到现在，总的体会是只有你想不到没有它做不到。</p>
+          
+            <h2 id="背景">背景</h2><p>话说sqlalchemy真是一个非常好用的库，python orm基本上是舍我其谁了，文档还非常全面，基本上没有什么硬伤，现在也冲出了1.0版本，未来更加值得期待。<br>我最早用django orm，不过很快就觉得很多功能不够用，我当时用的版本是1.3.1，没有<em>bulk insert</em>也没有<em>锁</em>，没有这两个功能，好多应用就没法用django开发了。之后开始接触sqlalchemy，一直用到现在，总的体会是只有你想不到没有它做不到。</p>
 <p>我们项目里有一个需求，就是数据按月分表，比如:2014年6月数据就存在<em>record_201406</em>表中, 其他月数据按此方法类推。这个需求如果是用sqlalchemy来获取数据，我们怎么做呢？</p>
 <h2 id="一般方法有什么问题？">一般方法有什么问题？</h2><p>一般情况下，我们很自然想到使用如下方法：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RecodeDao_201406</span><span class="params">(Base)</span>:</span></span><br><span class="line">   	__tablename__ = <span class="string">'record_201406'</span></span><br><span class="line">   	id = Column(INT(<span class="number">11</span>), primary_key=<span class="keyword">True</span>)</span><br><span class="line">   ...</span><br></pre></td></tr></table></figure>
@@ -642,8 +1197,17 @@
 <h2 id="Automap方法">Automap方法</h2><p>sqlalchemy文档完备，具体可点击<a href="http://docs.sqlalchemy.org/en/rel_1_0/orm/extensions/automap.html" target="_blank" rel="external">Automap</a>，它可以自动映射数据库的表，通过数据表名映射model，简单直接，实现起来如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> sqlalchemy.ext.automap <span class="keyword">import</span> automap_base</span><br><span class="line"></span><br><span class="line">AutoBase = automap_base()</span><br><span class="line"><span class="comment"># reflect the tables</span></span><br><span class="line">AutoBase.prepare(engine, reflect=<span class="keyword">True</span>)</span><br><span class="line">tablename = <span class="string">"record_201406"</span></span><br><span class="line">RecordDao = getattr(AutoBase.classes, tablename)</span><br></pre></td></tr></table></figure>
 <p>这样就可以了，很清晰。但是这个方法有一个缺点，<em>Automap</em>的映射虽然是自动的，但是只有在启动的时候生效，也就是说如果新建一个数据表，而没有告诉<em>Automap</em>，那这个表是找不到的。在实际使用中，可以捕获AttributeError异常，并再次调用<code>AutoBase.prepare(engine, reflect=True)</code> 刷新映射关系。</p>
-</span>
+
+          
         
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
       
     </div>
 
@@ -663,59 +1227,91 @@
     
       
 
+  
+  
+
+  
+  
+  
+
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/06/17/我为什么写博客/" itemprop="url">
-                我为什么写博客?
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-06-17T19:05:26+08:00" content="2015-06-17">
-            2015-06-17
-          </time>
-        </span>
+    
+      <header class="post-header">
 
         
-
         
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2015/06/17/我为什么写博客/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/17/我为什么写博客/" itemprop="commentsCount"></span>
-            </a>
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/06/17/我为什么写博客/" itemprop="url">
+                  我为什么写博客?
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-06-17T19:05:26+08:00" content="2015-06-17">
+              2015-06-17
+            </time>
           </span>
+
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/06/17/我为什么写博客/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/17/我为什么写博客/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><p>我以前也有写技术博客的习惯，在csdn上，解决一个问题写一篇，有些工具的使用方式也放上边，比较有规律。</p>
+          
+            <p>我以前也有写技术博客的习惯，在csdn上，解决一个问题写一篇，有些工具的使用方式也放上边，比较有规律。</p>
 <p>后来换了工作，开始比较忙，就扔下了，等闲下来想写，又觉得不好意思了。那时候眼界宽了，看过很多大牛写的文章，觉得自己写的这么浅显，有点拿不出手，想厚积薄发再写。然后就到了现在，对于写博客来说又有了新认识，所以又准备重新捡起这个习惯。</p>
 <p>首先，自己确实有刚需。有的技术问题虽然解决了，但是下次遇到了，细节问题又要重新检索，时间成本高，最好还是找个地方记录。另外，在检索信息的过程中，正是很多博客的内容给了我很多指引，解决了问题，写了博客也可以帮助他人，也算是回馈技术圈的一种方式。写博客还有一种好处就是加深认识，提高表述能力。平时对很多问题确实是有了新的理解，但让我写出来，讲给他人，那还得再深思熟虑一番，这个过程对博主是很有帮助的。这段时间深有体会，才想起来还是要再写博客，至于写得是不是有独到见解，是不是拿得出手，其实也没那么重要，都是自己成长的过程。</p>
 <p>本篇作为新博客第一篇，既为了开篇，也为了纪念。至于为什么用了<strong><em>githup page + hexo</em></strong>，确实是为了可定制、免费、省心。另外<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">NexT</a>的主题满足了我的所有需求，如果你喜欢我的博客样式，可以尝试一下。</p>
-</span>
+
+          
         
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
       
     </div>
 
@@ -736,14 +1332,17 @@
   </section>
 
   
- </div>
 
+
+          </div>
+          
+
+
+          
+
+        </div>
         
-
-        
-      </div>
-
-      
+          
   
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
@@ -758,40 +1357,41 @@
 
       
 
-      <section class="site-overview">
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" src="/uploads/avatar.png" alt="Leo Shang" itemprop="image"/>
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="Leo Shang" />
           <p class="site-author-name" itemprop="name">Leo Shang</p>
+          <p class="site-description motion-element" itemprop="description">永远年轻, 永远热泪盈眶</p>
         </div>
-        <p class="site-description motion-element" itemprop="description">永远年轻, 永远热泪盈眶</p>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
-          <div class="site-state-item site-state-categories">
-            
-              <span class="site-state-item-count">0</span>
-              <span class="site-state-item-name">分类</span>
-              
-          </div>
+          
 
-          <div class="site-state-item site-state-tags">
-            <a href="/tags">
-              <span class="site-state-item-count">4</span>
-              <span class="site-state-item-name">标签</span>
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
               </a>
-          </div>
+            </div>
+          
 
         </nav>
 
         
           <div class="feed-link motion-element">
             <a href="/atom.xml" rel="alternate">
-              <i class="menu-item-icon icon-next-feed"></i>
+              <i class="fa fa-rss"></i>
               RSS
             </a>
           </div>
@@ -804,9 +1404,8 @@
         
         
 
-        <div class="links-of-author motion-element">
-          
-        </div>
+        
+        
 
       </section>
 
@@ -816,15 +1415,18 @@
   </aside>
 
 
+        
+      </div>
     </main>
 
     <footer id="footer" class="footer">
-      <div class="footer-inner"> <div class="copyright" >
+      <div class="footer-inner">
+        <div class="copyright" >
   
-  &copy; &nbsp; 
+  &copy; 
   <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
-    <i class="icon-next-heart"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Leo Shang</span>
 </div>
@@ -840,27 +1442,87 @@
   </a>
 </div>
 
+        
 
- </div>
+        
+      </div>
     </footer>
 
-    <div class="back-to-top"></div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
   </div>
 
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
   
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
   
   
+
   
+
   
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
 
   
 
     <script type="text/javascript">
       var disqus_shortname = 'leoshang';
       var disqus_identifier = 'index.html';
-      var disqus_title = '';
+      var disqus_title = "";
       var disqus_url = '';
 
       function run_disqus_script(disqus_script){
@@ -878,34 +1540,6 @@
 
 
 
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
-
-
-  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
-  
-
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
-
-  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
-
-
-
-  <script type="text/javascript" src="/js/nav-toggle.js"></script>
-
-  
-
-  <script type="text/javascript">
-    $(document).ready(function () {
-      if (CONFIG.sidebar === 'always') {
-        displaySidebar();
-      }
-    });
-  </script>
-
-  
 
   
   
@@ -913,38 +1547,7 @@
 
   
 
-    <script type="text/javascript">
-      var disqus_shortname = 'leoshang';
-      var disqus_identifier = 'index.html';
-      var disqus_title = '';
-      var disqus_url = '';
-
-      function run_disqus_script(disqus_script){
-        var dsq = document.createElement('script');
-        dsq.type = 'text/javascript';
-        dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      }
-
-      run_disqus_script('count.js');
-      
-    </script>
   
 
-
-
-  
-
-  
-  <script type="text/javascript" src="/js/lazyload.js"></script>
-  <script type="text/javascript">
-    $(function () {
-      $("#posts").find('img').lazyload({
-        placeholder: "/images/loading.gif",
-        effect: "fadeIn"
-      });
-    });
-  </script>
 </body>
 </html>
