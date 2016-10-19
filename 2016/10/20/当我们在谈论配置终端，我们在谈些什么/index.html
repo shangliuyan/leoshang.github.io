@@ -103,6 +103,7 @@
 <meta name="twitter:title" content="当我们在谈论配置终端，我们在谈些什么">
 <meta name="twitter:description" content="当我们在谈论终端时，我们在谈些什么程序员经常使用终端，甚至只在终端下工作，那么终端的顺手程度就很重要了。不可避免的，大多数程序员都掌握了配置终端的技巧，但从目前我看到的文章来看，没有比较系统的总结。本文试图通过梳理终端相关的背景知识，整理一个清晰的配置脉络。
 我们配置的是终端，还是shell？通常我们说配置终端的时候，其实隐含的意思是配置shell解释器和终端（terminal），以及常用软件（l">
+<meta name="twitter:image" content="http://yoursite.com/img/Stdstreams-notitle.svg">
 
 
 
@@ -309,11 +310,11 @@
 <li><code>\x1B</code></li>
 </ul>
 <p>我们可以用”<esc>[<em>Color Code</em>m”    的形式输出颜色，例如：</esc></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printf &#34;Default \e[91mLight red&#34;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">printf &quot;Default \e[91mLight red&quot;</div></pre></td></tr></table></figure>
 <p>终端的显示为：</p>
 <p> <img src="/img/term_color.png" alt="terminal color"></p>
 <p>同理，所谓的终端提示符颜色，以及各种软件结果的输出，只要加上颜色转义，就会被终端显示为对应的颜色。理论上，我们任何的输出都可以自定义颜色，例如下面的方法，将make日志的不同级别分颜色打印出来。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make 2&#62;&#38;1 | sed -e &#39;s/.*\bWARN.*/\x1b[7m&#38;\x1b[0m/i&#39; -e &#39;s/.*\bERR.*/\x1b[93;41m&#38;\x1b[0m/i&#39;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make 2&gt;&amp;1 | sed -e &apos;s/.*\bWARN.*/\x1b[7m&amp;\x1b[0m/i&apos; -e &apos;s/.*\bERR.*/\x1b[93;41m&amp;\x1b[0m/i&apos;</div></pre></td></tr></table></figure>
 <p>了解到这些，就明白为什么 <em>ls</em> 指令为什么默认没有颜色，但 <em>ls -G</em> 就有颜色了，输出加入颜色转义了嘛。</p>
 <h4 id="我们需要配置终端的什么？">我们需要配置终端的什么？</h4><p>下面我列了下，一般我们需要做的配置清单</p>
 <ul>
@@ -349,7 +350,7 @@
 </li>
 <li><p>以bash为例：在<em>~/.bash_profile</em> 中修改PS1环境变量即可。例如：</p>
 </li>
-<li><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PS1=&#34;\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ &#34;</span><br></pre></td></tr></table></figure>
+<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PS1=&quot;\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ &quot;</div></pre></td></tr></table></figure>
 </li>
 <li><p>更详细定制的配置方法网上很多，参见<a href="https://linuxconfig.org/bash-prompt-basics" target="_blank" rel="external">https://linuxconfig.org/bash-prompt-basics</a></p>
 </li>
@@ -360,7 +361,7 @@
 <li><p>editor（vim，emac）</p>
 <ul>
 <li><p>同理，编辑器的输出设置要在编辑器的配置文件中设置，~/.vimrc中 配置</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colorscheme theme</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">colorscheme theme</div></pre></td></tr></table></figure>
 </li>
 <li><p>vim 自带多种主题可供选择，路径为 <em>/usr/share/vim/vim7x/colors</em></p>
 </li>
@@ -378,7 +379,7 @@
 <li><p>别名</p>
 <ul>
 <li><p>这个根据个人习惯，比较通用的比如</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias ll=&#34;ls -hlF&#34;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alias ll=&quot;ls -hlF&quot;</div></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
