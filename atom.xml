@@ -143,39 +143,6 @@
   </entry>
   
   <entry>
-    <title><![CDATA[Redis实践——前言]]></title>
-    <link href="http://yoursite.com/2016/06/20/Redis%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94%E5%89%8D%E8%A8%80/"/>
-    <id>http://yoursite.com/2016/06/20/Redis实践——前言/</id>
-    <published>2016-06-20T13:34:31.000Z</published>
-    <updated>2016-07-07T08:05:49.000Z</updated>
-    <content type="html"><![CDATA[<p>现在工作中用redis比较多，为了进度也是用的很随便，一直想做个梳理，总结归纳一下redis使用方法。在这里也是挖个坑，接下来想写一个系列，主要是通过实际的应用出发，姑且记录redis的一些使用经验，希望以后能真正总结出一种套路或者说规范。</p>
-<p>大学时我们都学过数据库理论，严格讲应该叫关系数据库理论。经过多年发展, 关系数据库有系统的方法理论，我们常用的梳理关系方法用E-R图，评价标准可以用范式理论。<br>与此相比，nosql由于设计的多样性，使用方法上更多的是和应用场景相关，更多使用依赖个人喜好，这个就造成了一些混乱, 下面我会按照主题，总结下可能出现的一些混乱点，得出一些个人结论。</p>
-<p>以下是相关的主题：</p>
-<p>基础篇</p>
-<ul>
-<li>redis提供的数据结构</li>
-<li>redis实用特性：事务，pipline，script<br>要使用好redis，其实无外乎两点，第一点，掌握基本数据结构提供的功能和使用场景，这个网上内容很多，概念不想多讲，我会在最后的实例篇中进行说明。<br>另外就一个，就是除了数据机构的特性了，这个我简单介绍常用的并且容易混淆的三个特性，事物，pipeline和script。</li>
-</ul>
-<p>规范篇</p>
-<ul>
-<li>key名称的设计规范</li>
-</ul>
-<p>实例篇</p>
-<ul>
-<li>json和map对比</li>
-<li>任务队列的设计</li>
-<li>队列消费方式对比</li>
-<li>任务调度服务设计(zset)</li>
-</ul>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>现在工作中用redis比较多，为了进度也是用的很随便，一直想做个梳理，总结归纳一下redis使用方法。在这里也是挖个坑，接下来想写一个系列，主要是通过实际的应用出发，姑且记录redis的一些使用经验，希望以后能真正总结出一种套路或者说规范。</p>
-<p>大学时我们都学过数]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[python2 json的大坑]]></title>
     <link href="http://yoursite.com/2016/06/15/python2-json%E7%9A%84%E5%A4%A7%E5%9D%91/"/>
     <id>http://yoursite.com/2016/06/15/python2-json的大坑/</id>

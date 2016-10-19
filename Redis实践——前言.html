@@ -86,15 +86,19 @@
 
 
 
-<meta name="description" content="永远年轻, 永远热泪盈眶">
+<meta name="description" content="现在工作中用redis比较多，为了进度也是用的很随便，一直想做个梳理，总结归纳一下redis使用方法。在这里也是挖个坑，接下来想写一个系列，主要是通过实际的应用出发，姑且记录redis的一些使用经验，希望以后能真正总结出一种套路或者说规范。
+大学时我们都学过数据库理论，严格讲应该叫关系数据库理论。经过多年发展, 关系数据库有系统的方法理论，我们常用的梳理关系方法用E-R图，评价标准可以用范式理论。">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Leo Shang 的 BLOG">
-<meta property="og:url" content="http://yoursite.com/tags/python/index.html">
+<meta property="og:title" content="Redis实践——前言">
+<meta property="og:url" content="http://yoursite.com/Redis实践——前言.html">
 <meta property="og:site_name" content="Leo Shang 的 BLOG">
-<meta property="og:description" content="永远年轻, 永远热泪盈眶">
+<meta property="og:description" content="现在工作中用redis比较多，为了进度也是用的很随便，一直想做个梳理，总结归纳一下redis使用方法。在这里也是挖个坑，接下来想写一个系列，主要是通过实际的应用出发，姑且记录redis的一些使用经验，希望以后能真正总结出一种套路或者说规范。
+大学时我们都学过数据库理论，严格讲应该叫关系数据库理论。经过多年发展, 关系数据库有系统的方法理论，我们常用的梳理关系方法用E-R图，评价标准可以用范式理论。">
+<meta property="og:updated_time" content="2016-07-07T08:05:49.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Leo Shang 的 BLOG">
-<meta name="twitter:description" content="永远年轻, 永远热泪盈眶">
+<meta name="twitter:title" content="Redis实践——前言">
+<meta name="twitter:description" content="现在工作中用redis比较多，为了进度也是用的很随便，一直想做个梳理，总结归纳一下redis使用方法。在这里也是挖个坑，接下来想写一个系列，主要是通过实际的应用出发，姑且记录redis的一些使用经验，希望以后能真正总结出一种套路或者说规范。
+大学时我们都学过数据库理论，严格讲应该叫关系数据库理论。经过多年发展, 关系数据库有系统的方法理论，我们常用的梳理关系方法用E-R图，评价标准可以用范式理论。">
 
 
 
@@ -115,9 +119,15 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/python/"/>
+  <link rel="canonical" href="http://yoursite.com/Redis实践——前言.html"/>
 
-  <title> 标签: python | Leo Shang 的 BLOG </title>
+  <title>
+  
+
+  
+    Redis实践——前言 | Leo Shang 的 BLOG
+  
+</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -216,130 +226,31 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        python
-        <small>标签</small>
-      </h2>
-    </div>
-
+  <div id="posts" class="posts-expand">
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2015/07/19/tornado的网络模型/" itemprop="url">
-              
-                <span itemprop="name">tornado的网络模型</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2015-07-19T18:36:45+08:00"
-              content="2015-07-19" >
-          07-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2015/07/06/python的协程/" itemprop="url">
-              
-                <span itemprop="name">python的协程</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2015-07-06T15:18:35+08:00"
-              content="2015-07-06" >
-          07-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2015/07/04/celery有什么难理解的/" itemprop="url">
-              
-                <span itemprop="name">celery有什么难理解的?</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2015-07-04T14:09:06+08:00"
-              content="2015-07-04" >
-          07-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2015/06/29/sqlchemy如何分表/" itemprop="url">
-              
-                <span itemprop="name">sqlalchemy如何分表</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2015-06-29T21:45:39+08:00"
-              content="2015-06-29" >
-          06-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      <p>现在工作中用redis比较多，为了进度也是用的很随便，一直想做个梳理，总结归纳一下redis使用方法。在这里也是挖个坑，接下来想写一个系列，主要是通过实际的应用出发，姑且记录redis的一些使用经验，希望以后能真正总结出一种套路或者说规范。</p>
+<p>大学时我们都学过数据库理论，严格讲应该叫关系数据库理论。经过多年发展, 关系数据库有系统的方法理论，我们常用的梳理关系方法用E-R图，评价标准可以用范式理论。<br>与此相比，nosql由于设计的多样性，使用方法上更多的是和应用场景相关，更多使用依赖个人喜好，这个就造成了一些混乱, 下面我会按照主题，总结下可能出现的一些混乱点，得出一些个人结论。</p>
+<p>以下是相关的主题：</p>
+<p>基础篇</p>
+<ul>
+<li>redis提供的数据结构</li>
+<li>redis实用特性：事务，pipline，script<br>要使用好redis，其实无外乎两点，第一点，掌握基本数据结构提供的功能和使用场景，这个网上内容很多，概念不想多讲，我会在最后的实例篇中进行说明。<br>另外就一个，就是除了数据机构的特性了，这个我简单介绍常用的并且容易混淆的三个特性，事物，pipeline和script。</li>
+</ul>
+<p>规范篇</p>
+<ul>
+<li>key名称的设计规范</li>
+</ul>
+<p>实例篇</p>
+<ul>
+<li>json和map对比</li>
+<li>任务队列的设计</li>
+<li>队列消费方式对比</li>
+<li>任务调度服务设计(zset)</li>
+</ul>
 
     
   </div>
-
-  
 
 
           </div>
@@ -347,6 +258,17 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -529,9 +451,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'leoshang';
-      var disqus_identifier = 'tags/python/index.html';
-      var disqus_title = "";
-      var disqus_url = '';
+      var disqus_identifier = 'Redis实践——前言.html';
+      var disqus_title = "Redis实践——前言";
+      var disqus_url = 'http://yoursite.com/Redis实践——前言.html';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
@@ -542,6 +464,8 @@
       }
 
       run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
       
     </script>
   
